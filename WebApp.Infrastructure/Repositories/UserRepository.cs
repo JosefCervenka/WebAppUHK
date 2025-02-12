@@ -15,12 +15,12 @@ namespace WebApp.Infrastructure.Repositories
 
         }
 
-        public async Task<User> GetByEmailAsync(string email)
+        public async Task<User?> GetByEmailAsync(string email)
         {
             return await _context.User.FirstOrDefaultAsync(x => x.Email == email);
         }
 
-        public async Task<User> GetUserWithRolesAsync(int id)
+        public async Task<User?> GetUserWithRolesAsync(int id)
         {
             return await _context.User
                 .Include(x => x.UserSysRoles)
@@ -28,7 +28,7 @@ namespace WebApp.Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<User> GetByNameAsync(string name)
+        public async Task<User?> GetByNameAsync(string name)
         {
             return await _context.User.FirstOrDefaultAsync(x => x.Name == name);
         }

@@ -29,14 +29,6 @@ namespace WebApp.Server.Controllers
             return BadRequest("You are not login in");
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpGet("/hello")]
-        public async Task<IActionResult> Hello()
-        {
-            return Ok("Hello");
-        }
-
-
         [HttpPost("/api/login")]
         public async Task<IActionResult> LoginAsync([FromBody] SysUserLoginDTO sysUserLogin)
         {
