@@ -1,0 +1,62 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using WebApp.Application.Services.Sys;
+using WebApp.Application.Services.Sys.Models;
+using WebApp.Infrastructure;
+
+namespace WebApp.Server.Controllers
+{
+    [Controller]
+    public class LoginController : ControllerBase
+    {
+        private SysUserService _sysUserService { get; set; }
+        public LoginController(SysUserService sysUserService)
+        {
+            _sysUserService = sysUserService;
+        }
+
+        [HttpGet("/api/unuthorized")]
+        public async Task<IActionResult> Unuthorized()
+        {
+            return BadRequest("You are unuthorized");
+        }
+
+        [HttpGet("/api/no-login")]
+        public async Task<IActionResult> NotLogin()
+        {
+            return BadRequest("You are not login in");
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("/hello")]
+        public async Task<IActionResult> Hello()
+        {
+            return Ok("Hello");
+        }
+
+
+        [HttpPost("/api/login")]
+        public async Task<IActionResult> LoginAsync([FromBody] SysUserLoginDTO sysUserLogin)
+        {
+            var (token, message) = await _sysUserService.LoginUserAsync(sysUserLogin);
+
+            if (token is not null)
+            {
+                HttpContext.Response.Cookies.Append("authorization", token);
+                return Ok(message);
+            }
+
+            return BadRequest(message);
+        }
+
+        [HttpPost("/api/register")]
+        public async Task<IActionResult> RegisterAsync([FromBody] SysUserRegiterDTO sysUserRegiter)
+        {
+            await _sysUserService.RegisterUserAsync(sysUserRegiter);
+
+            return Ok();
+        }
+    }
+}
