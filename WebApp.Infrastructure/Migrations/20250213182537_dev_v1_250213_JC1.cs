@@ -8,11 +8,24 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace WebApp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class dev_v1_250212_JC1 : Migration
+    public partial class dev_v1_250213_JC1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "SysRole",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SysRole", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
@@ -27,25 +40,6 @@ namespace WebApp.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SysRole",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    UserId = table.Column<int>(type: "integer", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SysRole", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SysRole_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -76,17 +70,18 @@ namespace WebApp.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "SysRole",
-                columns: new[] { "Id", "Name", "UserId" },
+                columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Admin", null },
-                    { 2, "User", null }
+                    { 1, "Admin" },
+                    { 2, "User" }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_SysRole_UserId",
+                name: "IX_SysRole_Name",
                 table: "SysRole",
-                column: "UserId");
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_Email",

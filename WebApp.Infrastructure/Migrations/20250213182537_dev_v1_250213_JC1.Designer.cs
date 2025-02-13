@@ -11,8 +11,8 @@ using WebApp.Infrastructure;
 namespace WebApp.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250212102950_dev_v1_250212_JC1")]
-    partial class dev_v1_250212_JC1
+    [Migration("20250213182537_dev_v1_250213_JC1")]
+    partial class dev_v1_250213_JC1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,12 +36,10 @@ namespace WebApp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("SysRole");
 
@@ -116,13 +114,6 @@ namespace WebApp.Infrastructure.Migrations
                     b.ToTable("UserSysRole");
                 });
 
-            modelBuilder.Entity("WebApp.Core.Models.Sys.SysRole", b =>
-                {
-                    b.HasOne("WebApp.Core.Models.Sys.User", null)
-                        .WithMany("SysRoles")
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("WebApp.Core.Models.Sys.UserSysRole", b =>
                 {
                     b.HasOne("WebApp.Core.Models.Sys.SysRole", "SysRole")
@@ -132,7 +123,7 @@ namespace WebApp.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("WebApp.Core.Models.Sys.User", "User")
-                        .WithMany()
+                        .WithMany("UserSysRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -144,7 +135,7 @@ namespace WebApp.Infrastructure.Migrations
 
             modelBuilder.Entity("WebApp.Core.Models.Sys.User", b =>
                 {
-                    b.Navigation("SysRoles");
+                    b.Navigation("UserSysRoles");
                 });
 #pragma warning restore 612, 618
         }
