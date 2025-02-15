@@ -15,18 +15,17 @@ namespace WebApp.Infrastructure.Repositories.Common
         public async Task<Gallery?> GetWithPhotoAsync(int id)
         {
             return await _context.Gallery
-                .Include(x => x.PhotoGalleries)
-                    .ThenInclude(x => x.Image)
+                .Include(x => x.Photos)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task AddPhoto(int galleryId, Photo photoGallery)
         {
             var gallery = await _context.Gallery
-                .Include(x => x.PhotoGalleries)
+                .Include(x => x.Photos)
                 .FirstOrDefaultAsync(x => x.Id == galleryId);
 
-            gallery.PhotoGalleries.Add(photoGallery);
+            gallery.Photos.Add(photoGallery);
 
             await _context.SaveChangesAsync();
         }
@@ -35,7 +34,7 @@ namespace WebApp.Infrastructure.Repositories.Common
         {
             if (withPhotos == true)
                 return _context.Gallery.Where(x => x.AuthorId == userId)
-                    .Include(x => x.PhotoGalleries)
+                    .Include(x => x.Photos)
                     .ToList();
 
             else

@@ -199,7 +199,7 @@ namespace WebApp.Infrastructure.Migrations
             modelBuilder.Entity("WebApp.Core.Models.Common.Photo", b =>
                 {
                     b.HasOne("WebApp.Core.Models.Common.Gallery", "Gallery")
-                        .WithMany("PhotoGalleries")
+                        .WithMany("Photos")
                         .HasForeignKey("GalleryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -236,7 +236,7 @@ namespace WebApp.Infrastructure.Migrations
 
             modelBuilder.Entity("WebApp.Core.Models.Common.Gallery", b =>
                 {
-                    b.Navigation("PhotoGalleries");
+                    b.Navigation("Photos");
                 });
 
             modelBuilder.Entity("WebApp.Core.Models.Sys.User", b =>

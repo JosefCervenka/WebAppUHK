@@ -36,11 +36,11 @@ namespace WebApp.Application.Services.Common
             {
                 Id = gallery.Id,
                 Name = gallery.Name,
-                PhotosUrl = gallery.PhotoGalleries.Select(x => new PhotosUrlDTO
+                Photos = gallery.Photos.Select(x => new Picture
                 {
                     Name = x.Name,
-                    Id = x.PhotoId,
-                    Url = $"/api/image/{x.PhotoId}"
+                    Id = x.Id,
+                    Url = $"/api/image/{x.ImageId}"
                 }).ToList()
             };
 

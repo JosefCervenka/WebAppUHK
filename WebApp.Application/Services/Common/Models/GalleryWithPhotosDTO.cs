@@ -10,10 +10,10 @@ namespace WebApp.Application.Services.Common.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<PhotosUrlDTO> PhotosUrl { get; set; }
+        public List<Picture> Photos { get; set; }
     }
 
-    public class PhotosUrlDTO
+    public class Picture
     {
         public int Id { get; set; }
         public string Name { get; set; }

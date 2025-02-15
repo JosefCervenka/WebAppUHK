@@ -13,6 +13,6 @@ namespace WebApp.Core.Models.Common
         public string Name { get; set; }
         public int? AuthorId { get; set; }
         public User? Author { get; set; }
-        public List<Photo> PhotoGalleries { get; set; }
+        public List<Photo> Photos { get; set; }
     }
 }

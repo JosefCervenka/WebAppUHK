@@ -9,7 +9,7 @@ namespace WebApp.Core.Models.Common
 {
     public class Photo : BaseEntity
     {
-        public int PhotoId { get; set; }
+        public int ImageId { get; set; }
         public Image Image { get; set; }
         public int GalleryId { get; set; }
         public Gallery Gallery { get; set; }

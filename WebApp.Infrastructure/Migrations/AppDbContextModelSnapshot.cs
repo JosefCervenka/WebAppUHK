@@ -40,7 +40,7 @@ namespace WebApp.Infrastructure.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Gallery");
+                    b.ToTable("Gallery", (string)null);
                 });
 
             modelBuilder.Entity("WebApp.Core.Models.Common.Image", b =>
@@ -61,7 +61,7 @@ namespace WebApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Image");
+                    b.ToTable("Image", (string)null);
                 });
 
             modelBuilder.Entity("WebApp.Core.Models.Common.Photo", b =>
@@ -91,7 +91,7 @@ namespace WebApp.Infrastructure.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Photo");
+                    b.ToTable("Photo", (string)null);
                 });
 
             modelBuilder.Entity("WebApp.Core.Models.Sys.SysRole", b =>
@@ -111,7 +111,7 @@ namespace WebApp.Infrastructure.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("SysRole");
+                    b.ToTable("SysRole", (string)null);
 
                     b.HasData(
                         new
@@ -158,7 +158,7 @@ namespace WebApp.Infrastructure.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("User");
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("WebApp.Core.Models.Sys.UserSysRole", b =>
@@ -181,7 +181,7 @@ namespace WebApp.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserSysRole");
+                    b.ToTable("UserSysRole", (string)null);
                 });
 
             modelBuilder.Entity("WebApp.Core.Models.Common.Gallery", b =>
@@ -196,7 +196,7 @@ namespace WebApp.Infrastructure.Migrations
             modelBuilder.Entity("WebApp.Core.Models.Common.Photo", b =>
                 {
                     b.HasOne("WebApp.Core.Models.Common.Gallery", "Gallery")
-                        .WithMany("PhotoGalleries")
+                        .WithMany("Photos")
                         .HasForeignKey("GalleryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -233,7 +233,7 @@ namespace WebApp.Infrastructure.Migrations
 
             modelBuilder.Entity("WebApp.Core.Models.Common.Gallery", b =>
                 {
-                    b.Navigation("PhotoGalleries");
+                    b.Navigation("Photos");
                 });
 
             modelBuilder.Entity("WebApp.Core.Models.Sys.User", b =>
