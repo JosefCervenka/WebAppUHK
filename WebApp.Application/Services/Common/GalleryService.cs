@@ -32,6 +32,9 @@ namespace WebApp.Application.Services.Common
         {
             var gallery = await _galleryRepository.GetWithPhotoAsync(id);
 
+            if (gallery is null)
+                return null;
+
             GalleryWithPhotosDTO galleryDTO = new GalleryWithPhotosDTO
             {
                 Id = gallery.Id,

@@ -15,13 +15,13 @@ namespace WebApp.Infrastructure.Repositories.Common
         {
         }
 
-        public async Task<Image> GetImageAsync(int id)
+        public async Task<Image?> GetImageAsync(int id)
         {
             var photo = await _context.Photo
                 .Include(x => x.Image)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            return photo.Image;
+            return photo?.Image;
         }
     }
 }

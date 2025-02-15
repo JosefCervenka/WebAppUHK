@@ -29,8 +29,12 @@ namespace WebApp.Server.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
-            var response = await _galleryService.GetGalleryAsync(id);
-            return Ok(response);
+            var gallery = await _galleryService.GetGalleryAsync(id);
+
+            if (gallery is null)
+                return BadRequest("Gallery does not exist.");
+
+            return Ok(gallery);
         }
 
         [Authorize]

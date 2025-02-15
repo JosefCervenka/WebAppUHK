@@ -17,6 +17,10 @@ namespace WebApp.Server.Controllers
         public async Task<IActionResult> GetImage([FromRoute] int id)
         {
             var image = await _galleryService.GetImageAsync(id);
+
+            if (image is null)
+                return BadRequest("Image does not exist.");
+
             return File(image.Data, $"image/{image.Type}");
         }
 
@@ -24,6 +28,9 @@ namespace WebApp.Server.Controllers
         public async Task<IActionResult> Get([FromRoute] int id)
         {
             var response = await _galleryService.GetPhotoAsync(id);
+            if(response is null)
+                return BadRequest("Picture does not exist.");
+
             return Ok(response);
         }
     }
