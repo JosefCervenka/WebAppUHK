@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using System.Reflection.Metadata;
 using System.Security.Claims;
 using WebApp.Application.Services.Sys.Models;
@@ -6,7 +7,7 @@ using WebApp.Application.Utils;
 using WebApp.Core.Enums;
 using WebApp.Core.Models.Sys;
 using WebApp.Infrastructure;
-using WebApp.Infrastructure.Repositories;
+using WebApp.Infrastructure.Repositories.Sys;
 
 namespace WebApp.Application.Services.Sys
 {
@@ -17,12 +18,17 @@ namespace WebApp.Application.Services.Sys
         private readonly UserRepository _userRepository;
         private readonly SysRoleRepository _sysRoleRepository;
         private readonly PasswordHasher _passwordHasher;
-        private readonly JWTGenerator _jwtGenerator;
+        private readonly JwtGenerator _jwtGenerator;
 
         private readonly string _tokenKey;
         private readonly string _issuer;
         private readonly string _audience;
 
+        public async Task<User?> GetUserFromHttpContextAsync(HttpContext httpContext)
+        {
+            var name = httpContext.User?.Identity?.Name;
+            return await _userRepository.GetByNameAsync(name);
+        }
 
         public SysUserService(AppDbContext context, IConfiguration configuration)
         {
@@ -30,7 +36,7 @@ namespace WebApp.Application.Services.Sys
             _userRepository = new UserRepository(_context);
             _sysRoleRepository = new SysRoleRepository(_context);
             _passwordHasher = new PasswordHasher();
-            _jwtGenerator = new JWTGenerator();
+            _jwtGenerator = new JwtGenerator();
             _configuration = configuration;
 
             _tokenKey = configuration["JWT:WebTokenKey"]!;

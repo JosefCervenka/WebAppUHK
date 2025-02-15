@@ -11,7 +11,7 @@ using WebApp.Core.Models.Sys;
 
 namespace WebApp.Application.Utils
 {
-    public class JWTGenerator
+    public class JwtGenerator
     {
         public ClaimsPrincipal? ValidateJwtToken(string token, string secretKey, string issuer, string audience)
         {

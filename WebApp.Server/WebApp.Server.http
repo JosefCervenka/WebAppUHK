@@ -1,6 +1,43 @@
 @WebApp.Server_HostAddress = http://localhost:5232
 
-GET {{WebApp.Server_HostAddress}}/weatherforecast/
-Accept: application/json
+###
+//login as admin
+POST {{WebApp.Server_HostAddress}}/api/authorization/login
+Content-Type: application/json
+{
+    "Email" : "AdminUser@gmail.com",
+    "Password" : "Heslo123"
+}
+###
 
+// login as user
+POST {{WebApp.Server_HostAddress}}/api/authorization/login
+Content-Type: application/json
+{
+    "Email" : "User@gmail.com",
+    "Password" : "Heslo123"
+}
+###
+
+//test admin
+GET {{WebApp.Server_HostAddress}}/api/example/role
+Accept: application/json
+###
+
+//test logín
+GET {{WebApp.Server_HostAddress}}/api/example/authorized
+Accept: application/json
+###
+
+
+//create gallery
+POST {{WebApp.Server_HostAddress}}/api/gallery
+Content-Type: application/json
+{
+    "name" : "Gallery 2"
+}
+###
+
+GET {{WebApp.Server_HostAddress}}/api/gallery/2
+Accept: application/json
 ###

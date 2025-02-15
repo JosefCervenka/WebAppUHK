@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using WebApp.Core.Models;
 using WebApp.Core.Models.Base;
 
-namespace WebApp.Infrastructure.Repositories
+namespace WebApp.Infrastructure.Repositories.Base
 {
     public class Repository<TEntity> where TEntity : BaseEntity
     {

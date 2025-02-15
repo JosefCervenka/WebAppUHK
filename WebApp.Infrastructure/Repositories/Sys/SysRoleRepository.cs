@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebApp.Core.Models.Sys;
+using WebApp.Infrastructure.Repositories.Base;
 
-namespace WebApp.Infrastructure.Repositories
+namespace WebApp.Infrastructure.Repositories.Sys
 {
     public class SysRoleRepository : Repository<SysRole>
     {

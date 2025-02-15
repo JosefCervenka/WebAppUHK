@@ -9,27 +9,28 @@ using WebApp.Infrastructure;
 namespace WebApp.Server.Controllers
 {
     [Controller]
-    public class LoginController : ControllerBase
+    [Route("/api/authorization/")]
+    public class AuthorizationController : ControllerBase
     {
         private SysUserService _sysUserService { get; set; }
-        public LoginController(SysUserService sysUserService)
+        public AuthorizationController(SysUserService sysUserService)
         {
             _sysUserService = sysUserService;
         }
 
-        [HttpGet("/api/unauthorized")]
+        [HttpGet("unauthorized")]
         public async Task<IActionResult> Unuthorized()
         {
             return BadRequest("You are unauthorized");
         }
 
-        [HttpGet("/api/no-login")]
+        [HttpGet("no-login")]
         public async Task<IActionResult> NotLogin()
         {
             return BadRequest("You are not login in");
         }
 
-        [HttpPost("/api/login")]
+        [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] SysUserLoginDTO sysUserLogin)
         {
             var (token, message) = await _sysUserService.LoginUserAsync(sysUserLogin);
@@ -43,7 +44,7 @@ namespace WebApp.Server.Controllers
             return BadRequest(message);
         }
 
-        [HttpPost("/api/register")]
+        [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync([FromBody] SysUserRegiterDTO sysUserRegiter)
         {
             await _sysUserService.RegisterUserAsync(sysUserRegiter);

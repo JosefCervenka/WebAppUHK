@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using WebApp.Core.Models;
+using WebApp.Core.Models.Common;
 using WebApp.Core.Models.Sys;
 
 
@@ -34,7 +35,7 @@ namespace WebApp.Infrastructure
             modelBuilder.Entity<SysRole>().HasData(
                 new SysRole
                 {
-                    Id = (int) Core.Enums.SysRoleEnum.Admin,
+                    Id = (int)Core.Enums.SysRoleEnum.Admin,
                     Name = "Admin",
                 }
             );
@@ -54,6 +55,8 @@ namespace WebApp.Infrastructure
         public DbSet<User> User { get; set; }
         public DbSet<SysRole> SysRole { get; set; }
         public DbSet<UserSysRole> UserSysRole { get; set; }
-
+        public DbSet<Gallery> Gallery { get; set; }
+        public DbSet<Photo> Photo { get; set; }
+        public DbSet<PhotoGallery> PhotoGallery { get; set; }
     }
 }
