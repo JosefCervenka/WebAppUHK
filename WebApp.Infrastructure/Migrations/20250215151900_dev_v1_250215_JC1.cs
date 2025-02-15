@@ -8,11 +8,25 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace WebApp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class dev_v1_250213_JC1 : Migration
+    public partial class dev_v1_250215_JC1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Image",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Data = table.Column<byte[]>(type: "bytea", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Image", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "SysRole",
                 columns: table => new
@@ -43,6 +57,25 @@ namespace WebApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Gallery",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    AuthorId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Gallery", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Gallery_User_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserSysRole",
                 columns: table => new
                 {
@@ -68,6 +101,34 @@ namespace WebApp.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Photo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PhotoId = table.Column<int>(type: "integer", nullable: false),
+                    ImageId = table.Column<int>(type: "integer", nullable: false),
+                    GalleryId = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Photo", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Photo_Gallery_GalleryId",
+                        column: x => x.GalleryId,
+                        principalTable: "Gallery",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Photo_Image_ImageId",
+                        column: x => x.ImageId,
+                        principalTable: "Image",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "SysRole",
                 columns: new[] { "Id", "Name" },
@@ -76,6 +137,21 @@ namespace WebApp.Infrastructure.Migrations
                     { 1, "Admin" },
                     { 2, "User" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Gallery_AuthorId",
+                table: "Gallery",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photo_GalleryId",
+                table: "Photo",
+                column: "GalleryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photo_ImageId",
+                table: "Photo",
+                column: "ImageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SysRole_Name",
@@ -110,7 +186,16 @@ namespace WebApp.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Photo");
+
+            migrationBuilder.DropTable(
                 name: "UserSysRole");
+
+            migrationBuilder.DropTable(
+                name: "Gallery");
+
+            migrationBuilder.DropTable(
+                name: "Image");
 
             migrationBuilder.DropTable(
                 name: "SysRole");

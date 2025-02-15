@@ -17,7 +17,7 @@ namespace WebApp.Server.Controllers
         public async Task<IActionResult> GetImage([FromRoute] int id)
         {
             var image = await _galleryService.GetImageAsync(id);
-            return File(image, "image/jpeg");
+            return File(image.Data, $"image/{image.Type}");
         }
 
         [HttpGet("{id:int}")]

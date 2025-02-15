@@ -16,25 +16,17 @@ namespace WebApp.Infrastructure.Repositories.Common
         {
             return await _context.Gallery
                 .Include(x => x.PhotoGalleries)
-                    .ThenInclude(x => x.Photo)
+                    .ThenInclude(x => x.Image)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task AddPhoto(int galleryId, Photo photo)
+        public async Task AddPhoto(int galleryId, Photo photoGallery)
         {
             var gallery = await _context.Gallery
                 .Include(x => x.PhotoGalleries)
                 .FirstOrDefaultAsync(x => x.Id == galleryId);
 
-            gallery.PhotoGalleries.Add(new PhotoGallery
-            {
-                Photo = photo
-            });
-
-            (await _context.Gallery.FirstOrDefaultAsync(x => x.Id == galleryId))?.PhotoGalleries.Add(new PhotoGallery
-            {
-                Photo = photo
-            });
+            gallery.PhotoGalleries.Add(photoGallery);
 
             await _context.SaveChangesAsync();
         }

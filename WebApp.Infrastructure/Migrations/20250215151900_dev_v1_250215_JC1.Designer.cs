@@ -11,7 +11,7 @@ using WebApp.Infrastructure;
 namespace WebApp.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250215090805_dev_v1_250215_JC1")]
+    [Migration("20250215151900_dev_v1_250215_JC1")]
     partial class dev_v1_250215_JC1
     {
         /// <inheritdoc />
@@ -46,7 +46,7 @@ namespace WebApp.Infrastructure.Migrations
                     b.ToTable("Gallery");
                 });
 
-            modelBuilder.Entity("WebApp.Core.Models.Common.Photo", b =>
+            modelBuilder.Entity("WebApp.Core.Models.Common.Image", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,19 +54,20 @@ namespace WebApp.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<byte[]>("Image")
+                    b.Property<byte[]>("Data")
                         .IsRequired()
                         .HasColumnType("bytea");
 
-                    b.Property<int>("Name")
-                        .HasColumnType("integer");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Photo");
+                    b.ToTable("Image");
                 });
 
-            modelBuilder.Entity("WebApp.Core.Models.Common.PhotoGallery", b =>
+            modelBuilder.Entity("WebApp.Core.Models.Common.Photo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -77,6 +78,13 @@ namespace WebApp.Infrastructure.Migrations
                     b.Property<int>("GalleryId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("ImageId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("PhotoId")
                         .HasColumnType("integer");
 
@@ -84,9 +92,9 @@ namespace WebApp.Infrastructure.Migrations
 
                     b.HasIndex("GalleryId");
 
-                    b.HasIndex("PhotoId");
+                    b.HasIndex("ImageId");
 
-                    b.ToTable("PhotoGallery");
+                    b.ToTable("Photo");
                 });
 
             modelBuilder.Entity("WebApp.Core.Models.Sys.SysRole", b =>
@@ -188,7 +196,7 @@ namespace WebApp.Infrastructure.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("WebApp.Core.Models.Common.PhotoGallery", b =>
+            modelBuilder.Entity("WebApp.Core.Models.Common.Photo", b =>
                 {
                     b.HasOne("WebApp.Core.Models.Common.Gallery", "Gallery")
                         .WithMany("PhotoGalleries")
@@ -196,15 +204,15 @@ namespace WebApp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebApp.Core.Models.Common.Photo", "Photo")
+                    b.HasOne("WebApp.Core.Models.Common.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("PhotoId")
+                        .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Gallery");
 
-                    b.Navigation("Photo");
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("WebApp.Core.Models.Sys.UserSysRole", b =>

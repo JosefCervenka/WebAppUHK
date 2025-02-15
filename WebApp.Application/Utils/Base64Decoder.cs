@@ -9,9 +9,20 @@ namespace WebApp.Application.Utils
 {
     public class Base64Decoder
     {
-        public byte[] Decode(string base64String)
+        public byte[] Decode(string base64String, out string type)
         {
+            var match = Regex.Match(base64String, @"^data:image\/([a-zA-Z]+);base64,");
+
+            if (match.Success)
+            {
+                type = match.Groups[1].Value;
+            }
+            else
+            {
+                type = null;
+            }
             var base64Data = Regex.Replace(base64String, @"^data:image\/[a-zA-Z]+;base64,", "");
+
             return Convert.FromBase64String(base64Data);
         }
 

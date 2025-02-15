@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,11 +9,9 @@ using WebApp.Core.Models.Sys;
 
 namespace WebApp.Core.Models.Common
 {
-    public class Gallery : BaseEntity
+    public class Image : BaseEntity
     {
-        public string Name { get; set; }
-        public int? AuthorId { get; set; }
-        public User? Author { get; set; }
-        public List<Photo> PhotoGalleries { get; set; }
+        public byte[] Data { get; set; }
+        public string Type { get; set; }
     }
 }

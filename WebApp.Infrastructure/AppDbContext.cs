@@ -56,7 +56,7 @@ namespace WebApp.Infrastructure
         public DbSet<SysRole> SysRole { get; set; }
         public DbSet<UserSysRole> UserSysRole { get; set; }
         public DbSet<Gallery> Gallery { get; set; }
+        public DbSet<Image> Image { get; set; }
         public DbSet<Photo> Photo { get; set; }
-        public DbSet<PhotoGallery> PhotoGallery { get; set; }
     }
 }

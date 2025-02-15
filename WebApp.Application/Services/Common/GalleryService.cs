@@ -38,7 +38,7 @@ namespace WebApp.Application.Services.Common
                 Name = gallery.Name,
                 PhotosUrl = gallery.PhotoGalleries.Select(x => new PhotosUrlDTO
                 {
-                    Name = x.Photo.Name,
+                    Name = x.Name,
                     Id = x.PhotoId,
                     Url = $"/api/image/{x.PhotoId}"
                 }).ToList()
@@ -68,19 +68,26 @@ namespace WebApp.Application.Services.Common
             return new PhotoDTO
             {
                 Name = photo.Name,
-                Image = $"api/image/{photo.Id}"
+                Image = $"/api/image/{photo.Id}"
             };
         }
 
         public async Task AddPhotoAsync(PhotoBase64DTO photo, int galleryId)
         {
-            await _galleryRepository.AddPhoto(galleryId, new Photo
+            var rawData = _base64Decoder.Decode(photo.Image, out string type);
+
+            await _galleryRepository.AddPhoto(galleryId, new Photo()
             {
                 Name = photo.Name,
-                Image = _base64Decoder.Decode(photo.Image)
+
+                Image = new Image()
+                {
+                    Type = type,
+                    Data = rawData
+                }
             });
         }
-        public async Task<byte[]> GetImageAsync(int id)
+        public async Task<Image> GetImageAsync(int id)
         {
             return await _photoRepository.GetImageAsync(id);
         }

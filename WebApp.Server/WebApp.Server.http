@@ -1,6 +1,18 @@
 @WebApp.Server_HostAddress = http://localhost:5232
 
 ###
+//register as user
+POST {{WebApp.Server_HostAddress}}/api/authorization/register
+Content-Type: application/json
+{
+    "Name" : "User",
+    "Email" : "User@gmail.com",
+    "Password" : "Heslo123",
+    "PasswordAgain" : "Heslo123"
+}
+###
+
+###
 //login as admin
 POST {{WebApp.Server_HostAddress}}/api/authorization/login
 Content-Type: application/json
@@ -34,7 +46,7 @@ Accept: application/json
 POST {{WebApp.Server_HostAddress}}/api/gallery
 Content-Type: application/json
 {
-    "name" : "Gallery 2"
+    "name" : "Gallery 1"
 }
 ###
 
