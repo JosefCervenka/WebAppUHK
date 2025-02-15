@@ -17,10 +17,10 @@ namespace WebApp.Server.Controllers
             _sysUserService = sysUserService;
         }
 
-        [HttpGet("/api/unuthorized")]
+        [HttpGet("/api/unauthorized")]
         public async Task<IActionResult> Unuthorized()
         {
-            return BadRequest("You are unuthorized");
+            return BadRequest("You are unauthorized");
         }
 
         [HttpGet("/api/no-login")]
