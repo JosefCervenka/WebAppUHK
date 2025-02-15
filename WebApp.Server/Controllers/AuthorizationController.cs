@@ -13,9 +13,18 @@ namespace WebApp.Server.Controllers
     public class AuthorizationController : ControllerBase
     {
         private SysUserService _sysUserService { get; set; }
+
         public AuthorizationController(SysUserService sysUserService)
         {
             _sysUserService = sysUserService;
+        }
+
+        [HttpGet("user")]
+        [Authorize]
+        public async Task<IActionResult> Get()
+        {
+            var user = await _sysUserService.GetUserFromHttpContextAsync(HttpContext);
+            return Ok(user);
         }
 
         [HttpGet("unauthorized")]

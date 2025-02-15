@@ -1,11 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
-interface WeatherForecast {
-  date: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
+
+interface User {
+  name: string;
+}
+
+interface UserLogin{
+  email :string;
+  password: string;
 }
 
 @Component({
@@ -14,18 +17,35 @@ interface WeatherForecast {
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
+  public user?: User;
+  public loginDto? : UserLogin;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
 
-  ngOnInit() {
-    this.getForecasts();
   }
 
-  getForecasts() {
-    this.http.get<WeatherForecast[]>('/weatherforecast').subscribe(
+  ngOnInit() {
+    this.loginDto = {
+      email: "AdminUser@gmail.com",
+      password: "Heslo123"
+    };
+
+    this.http.post<UserLogin>("api/authorization/login", this.loginDto).subscribe(
+      (response) => {
+        console.log("Login successful:", response);
+      },
+      (error) => {
+        console.error("Login failed:", error);
+      }
+    );
+
+    this.getUser();
+  }
+
+  getUser() {
+    this.http.get<User>('/api/authorization/user').subscribe(
       (result) => {
-        this.forecasts = result;
+        this.user = result;
       },
       (error) => {
         console.error(error);
