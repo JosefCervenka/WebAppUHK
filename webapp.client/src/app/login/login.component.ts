@@ -13,30 +13,28 @@ import {UserServiceService} from "../Services/user-service.service";
 export class LoginComponent {
 
   loginData = {email: '', password: ''};
+  errorMessage?: string = "";
 
   constructor(private http: HttpClient, private router: Router, private userService: UserServiceService) {
 
   }
 
   onSubmit() {
-    console.log("hello")
     this.http.post<string>("api/authorization/login", this.loginData).subscribe(
-      (x) => {
-        console.log(x);
+      (status) => {
+        this.http.get<User>('/api/authorization/user').subscribe(
+          (user) => {
+            this.userService.setUser(user);
+            this.router.navigate(['/']);
+          },
+          (error) => {
+            console.error(error);
+          }
+        );
       },
       (error) => {
-        console.log(error)
-      }
-    );
-
-
-    this.http.get<User>('/api/authorization/user').subscribe(
-      (user) => {
-        this.userService.setUser(user);
-        this.router.navigate(['/home']);
-      },
-      (error) => {
-        console.error(error);
+        console.log(error.error)
+        this.errorMessage = error.error.message;
       }
     );
   }

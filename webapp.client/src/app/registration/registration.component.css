@@ -40,11 +40,3 @@ form{
 .login-container button:hover {
   background: #ef0040;
 }
-
-a {
-  color: #FF1654;
-  text-decoration: none;
-}
-span{
-  font-weight: 400;
-}

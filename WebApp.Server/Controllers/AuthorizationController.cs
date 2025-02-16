@@ -30,35 +30,49 @@ namespace WebApp.Server.Controllers
         [HttpGet("unauthorized")]
         public async Task<IActionResult> Unuthorized()
         {
-            return BadRequest("You are unauthorized");
+            return BadRequest(new
+            {
+                Message = "You are unauthorized."
+            });
         }
 
         [HttpGet("no-login")]
         public async Task<IActionResult> NotLogin()
         {
-            return BadRequest("You are not login in");
+            return BadRequest(new
+            {
+                Message = "You are not login in."
+            });
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] SysUserLoginDTO sysUserLogin)
         {
             var (token, message) = await _sysUserService.LoginUserAsync(sysUserLogin);
-
+            
             if (token is not null)
             {
                 HttpContext.Response.Cookies.Append("authorization", token);
-                return Ok(message);
+                return Ok(new
+                {
+                    Message = message
+                });
             }
 
-            return BadRequest(message);
+            return BadRequest(new
+            {
+                Message = message
+            });
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync([FromBody] SysUserRegiterDTO sysUserRegiter)
         {
             await _sysUserService.RegisterUserAsync(sysUserRegiter);
-
-            return Ok();
+            return Ok(new
+            {
+                Message = "Your account was successfully created."
+            });
         }
     }
 }

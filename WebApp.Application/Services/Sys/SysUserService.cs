@@ -69,7 +69,7 @@ namespace WebApp.Application.Services.Sys
             return (null, "Invalid password entered.");
         }
 
-        public async Task RegisterUserAsync(SysUserRegiterDTO userDTO)
+        public async Task<User> RegisterUserAsync(SysUserRegiterDTO userDTO)
         {
             var hash = _passwordHasher.HashPassword(userDTO.Password, out byte[] salt);
 
@@ -84,6 +84,8 @@ namespace WebApp.Application.Services.Sys
             await _userRepository.AddAsync(user);
 
             await _sysRoleRepository.AddUserSysRole(user, (int)SysRoleEnum.User);
+
+            return user;
         }
 
     }
