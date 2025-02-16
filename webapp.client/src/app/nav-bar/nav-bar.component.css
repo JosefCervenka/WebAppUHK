@@ -1,0 +1,20 @@
+div {
+  background-color: #FF1654;
+  color: white;
+  display: flex;
+  padding: 8px;
+}
+
+a{
+    text-decoration: none;
+    color:white;
+}
+
+nav.nav-menu{
+    flex: 1;
+    padding-left: max(5vw, 10px);
+}
+
+nav.nav-login {
+  padding-right: max(5vw, 10px);
+}

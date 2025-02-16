@@ -1,3 +1,13 @@
 <div>
-  {{userName}}
+  <nav class="nav-menu">
+    <a>
+      Home
+    </a>
+  </nav>
+  <nav class="nav-login">
+      @if (user == null) {
+        <span><a href="/login">Login</a></span>
+      }
+      <span>{{ user?.name }}</span>
+  </nav>
 </div>

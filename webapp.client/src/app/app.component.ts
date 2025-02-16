@@ -1,10 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-
-
-interface User {
-  name: string;
-}
+import {User} from "./models/User";
+import {UserServiceService} from "./Services/user-service.service";
 
 interface UserLogin{
   email :string;
@@ -17,39 +14,22 @@ interface UserLogin{
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  public user?: User;
   public loginDto? : UserLogin;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private userService: UserServiceService) {
 
   }
 
   ngOnInit() {
-    this.loginDto = {
-      email: "AdminUser@gmail.com",
-      password: "Heslo123"
-    };
-
-    this.http.post<UserLogin>("api/authorization/login", this.loginDto).subscribe(
-      (response) => {
-        console.log("Login successful:", response);
-      },
-      (error) => {
-        console.error("Login failed:", error);
-      }
-    );
-
     this.getUser();
   }
 
   getUser() {
+    // try if user is alredy logged
     this.http.get<User>('/api/authorization/user').subscribe(
-      (result) => {
-        this.user = result;
+      (user) => {
+        this.userService.setUser(user)
       },
-      (error) => {
-        console.error(error);
-      }
     );
   }
 
