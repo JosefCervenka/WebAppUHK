@@ -1,0 +1,9 @@
+@if (user == null) {
+  <ng-container *ngTemplateOutlet="unauthorizedView"></ng-container>
+}
+@if (user != null)
+{
+  <ng-container *ngTemplateOutlet="authorizedView"></ng-container>
+}
+
+

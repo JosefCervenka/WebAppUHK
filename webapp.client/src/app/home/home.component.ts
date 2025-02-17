@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthorizedViewComponent} from "../authorized-view/authorized-view.component";
 
 @Component({
   selector: 'app-home',

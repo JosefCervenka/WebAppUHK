@@ -5,9 +5,16 @@
     </a>
   </nav>
   <nav class="nav-login">
-      @if (user == null) {
+    <app-authorized-view>
+
+      <ng-template #authorizedView>
+        <span> {{user?.name}} </span>
+      </ng-template>
+
+      <ng-template #unauthorizedView>
         <span><a href="/login">Login</a></span>
-      }
-      <span>{{ user?.name }}</span>
+      </ng-template>
+
+    </app-authorized-view>
   </nav>
 </div>
