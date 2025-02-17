@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using System.Reflection.Metadata;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 using WebApp.Application.Services.Sys.Models;
 using WebApp.Application.Utils;
 using WebApp.Core.Enums;
@@ -24,11 +25,6 @@ namespace WebApp.Application.Services.Sys
         private readonly string _issuer;
         private readonly string _audience;
 
-        public async Task<User?> GetUserFromHttpContextAsync(HttpContext httpContext)
-        {
-            var name = httpContext.User?.Identity?.Name;
-            return await _userRepository.GetByNameAsync(name);
-        }
 
         public SysUserService(AppDbContext context, IConfiguration configuration)
         {
@@ -44,8 +40,20 @@ namespace WebApp.Application.Services.Sys
             _audience = configuration["JWT:Audience"]!;
         }
 
-        public ClaimsPrincipal GetClaimsFromToken(string token) => _jwtGenerator.ValidateJwtToken(token, _tokenKey, _issuer, _audience);
+        public ClaimsPrincipal GetClaimsFromToken(string token) =>
+            _jwtGenerator.ValidateJwtToken(token, _tokenKey, _issuer, _audience);
+        
+        public async Task<User?> GetUserFromHttpContextAsync(HttpContext httpContext)
+        {
+            var name = httpContext.User?.Identity?.Name;
 
+            var id = await _context.User
+                .Where(x => x.Name == name)
+                .Select(x => x.Id)
+                .FirstOrDefaultAsync();
+
+            return await _userRepository.GetUserWithRolesAsync(id);
+        }
         public async Task<(string? token, string StatusMessage)> LoginUserAsync(SysUserLoginDTO userDTO)
         {
             User user = await _userRepository.GetByEmailAsync(userDTO.Email.ToLower());
@@ -87,6 +95,5 @@ namespace WebApp.Application.Services.Sys
 
             return user;
         }
-
     }
 }
