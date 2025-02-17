@@ -5,10 +5,10 @@ using WebApp.Application.Utils;
 using System.Security.Claims;
 namespace WebApp.Server.Middlewares
 {
-    public class JWTClaimMiddleWare : IMiddleware
+    public class JwtClaimMiddleWare : IMiddleware
     {
         SysUserService _sysUserService;
-        public JWTClaimMiddleWare(SysUserService sysUserService)
+        public JwtClaimMiddleWare(SysUserService sysUserService)
         {
             _sysUserService = sysUserService;
         }

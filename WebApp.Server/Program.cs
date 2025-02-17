@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>();
-builder.Services.AddScoped<JWTClaimMiddleWare>();
+builder.Services.AddScoped<JwtClaimMiddleWare>();
 
 builder.Services.AddScoped<SysUserService>();
 builder.Services.AddScoped<GalleryService>();
@@ -41,7 +41,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseMiddleware<JWTClaimMiddleWare>();
+app.UseMiddleware<JwtClaimMiddleWare>();
 
 app.UseAuthorization();
 
