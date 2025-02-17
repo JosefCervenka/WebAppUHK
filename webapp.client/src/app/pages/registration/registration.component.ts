@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {UserRegister} from "../models/UserRegister";
+import {UserRegister} from "../../models/UserRegister";
 import {HttpClient} from "@angular/common/http";
 
 @Component({

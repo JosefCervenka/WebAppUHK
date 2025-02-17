@@ -1,9 +1,8 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router} from '@angular/router';
-import {concatWith} from "rxjs";
-import {User} from "../models/User";
-import {UserServiceService} from "../Services/user-service.service";
+import {User} from "../../models/User";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-login',
@@ -15,7 +14,7 @@ export class LoginComponent {
   loginData = {email: '', password: ''};
   errorMessage?: string = "";
 
-  constructor(private http: HttpClient, private router: Router, private userService: UserServiceService) {
+  constructor(private http: HttpClient, private router: Router, private userService: UserService) {
 
   }
 

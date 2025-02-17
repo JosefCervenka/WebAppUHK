@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import {User} from "./models/User";
-import {UserServiceService} from "./Services/user-service.service";
+import {UserService} from "./services/user.service";
 
 interface UserLogin{
   email :string;
@@ -16,7 +16,7 @@ interface UserLogin{
 export class AppComponent implements OnInit {
   public loginDto? : UserLogin;
 
-  constructor(private http: HttpClient, private userService: UserServiceService) {
+  constructor(private http: HttpClient, private userService: UserService) {
 
   }
 

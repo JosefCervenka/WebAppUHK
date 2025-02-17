@@ -1,7 +1,7 @@
-import { Component, ContentChild, TemplateRef } from '@angular/core';
-import { UserServiceService } from "../Services/user-service.service";
-import { AsyncPipe } from '@angular/common';
-import {User} from "../models/User";
+import {Component, ContentChild, TemplateRef} from '@angular/core';
+import {UserService} from "../../services/user.service";
+import {User} from "../../models/User";
+
 @Component({
   selector: 'app-authorized-view',
   templateUrl: './authorized-view.component.html',
@@ -10,7 +10,7 @@ import {User} from "../models/User";
 export class AuthorizedViewComponent {
   user?: User = undefined;
 
-  constructor(private userService: UserServiceService) {
+  constructor(private userService: UserService) {
     this.userService.user$.subscribe(user => {
       if (user) {
         this.user = user;

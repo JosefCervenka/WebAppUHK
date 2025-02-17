@@ -8,6 +8,8 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\webapp.client\browser\</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\app\Services\" />
+    <Folder Include="src\app\components\" />
+    <Folder Include="src\app\pages\" />
+    <Folder Include="src\app\services\" />
   </ItemGroup>
 </Project>
