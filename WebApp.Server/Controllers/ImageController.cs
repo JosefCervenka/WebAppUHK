@@ -23,6 +23,5 @@ namespace WebApp.Server.Controllers
 
             return File(image.Data, $"image/{image.Type}");
         }
-
     }
 }

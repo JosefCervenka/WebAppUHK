@@ -21,28 +21,6 @@ namespace WebApp.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("WebApp.Core.Models.Common.Gallery", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("AuthorId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
-
-                    b.ToTable("Gallery");
-                });
-
             modelBuilder.Entity("WebApp.Core.Models.Common.Image", b =>
                 {
                     b.Property<int>("Id")
@@ -72,9 +50,6 @@ namespace WebApp.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("GalleryId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("ImageId")
                         .HasColumnType("integer");
 
@@ -83,8 +58,6 @@ namespace WebApp.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GalleryId");
 
                     b.HasIndex("ImageId");
 
@@ -102,7 +75,7 @@ namespace WebApp.Infrastructure.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("RecepieId")
+                    b.Property<int>("RecipeId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Text")
@@ -113,7 +86,7 @@ namespace WebApp.Infrastructure.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("RecepieId");
+                    b.HasIndex("RecipeId");
 
                     b.ToTable("Comment");
                 });
@@ -129,7 +102,7 @@ namespace WebApp.Infrastructure.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("GalleryId")
+                    b.Property<int>("HeaderPhotoId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Text")
@@ -144,7 +117,7 @@ namespace WebApp.Infrastructure.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("GalleryId");
+                    b.HasIndex("HeaderPhotoId");
 
                     b.ToTable("Recipe");
                 });
@@ -239,30 +212,13 @@ namespace WebApp.Infrastructure.Migrations
                     b.ToTable("UserSysRole");
                 });
 
-            modelBuilder.Entity("WebApp.Core.Models.Common.Gallery", b =>
-                {
-                    b.HasOne("WebApp.Core.Models.Sys.User", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId");
-
-                    b.Navigation("Author");
-                });
-
             modelBuilder.Entity("WebApp.Core.Models.Common.Photo", b =>
                 {
-                    b.HasOne("WebApp.Core.Models.Common.Gallery", "Gallery")
-                        .WithMany("Photos")
-                        .HasForeignKey("GalleryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("WebApp.Core.Models.Common.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Gallery");
 
                     b.Navigation("Image");
                 });
@@ -275,11 +231,15 @@ namespace WebApp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebApp.Core.Models.Recipe.Recipe", null)
+                    b.HasOne("WebApp.Core.Models.Recipe.Recipe", "Recipe")
                         .WithMany("Comments")
-                        .HasForeignKey("RecepieId");
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Author");
+
+                    b.Navigation("Recipe");
                 });
 
             modelBuilder.Entity("WebApp.Core.Models.Recipe.Recipe", b =>
@@ -290,15 +250,15 @@ namespace WebApp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebApp.Core.Models.Common.Gallery", "Gallery")
+                    b.HasOne("WebApp.Core.Models.Common.Photo", "HeaderPhoto")
                         .WithMany()
-                        .HasForeignKey("GalleryId")
+                        .HasForeignKey("HeaderPhotoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Author");
 
-                    b.Navigation("Gallery");
+                    b.Navigation("HeaderPhoto");
                 });
 
             modelBuilder.Entity("WebApp.Core.Models.Sys.UserSysRole", b =>
@@ -318,11 +278,6 @@ namespace WebApp.Infrastructure.Migrations
                     b.Navigation("SysRole");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("WebApp.Core.Models.Common.Gallery", b =>
-                {
-                    b.Navigation("Photos");
                 });
 
             modelBuilder.Entity("WebApp.Core.Models.Recipe.Recipe", b =>

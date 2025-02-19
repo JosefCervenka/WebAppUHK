@@ -1,4 +1,4 @@
-.login-container {
+.container {
   justify-content: center;
   flex-direction: column;
   display: flex;
@@ -16,10 +16,10 @@ form{
   align-items: center;
 }
 
-.login-container h2 {
+.container h2 {
   margin-bottom: 20px;
 }
-.login-container input {
+.container input {
   width: 300px;
   padding: 10px 0;
   margin: 10px 0;
@@ -27,7 +27,7 @@ form{
   border-radius: 5px;
   text-align: center;
 }
-.login-container button {
+.container button {
   width: 300px;
   padding: 10px;
   margin: 10px 0;
@@ -37,6 +37,6 @@ form{
   cursor: pointer;
   border-radius: 5px;
 }
-.login-container button:hover {
+.container button:hover {
   background: #ef0040;
 }

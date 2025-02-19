@@ -34,5 +34,21 @@ namespace WebApp.Server.Controllers
 
             return Ok(recepie);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromForm] string title, [FromForm] string description, [FromForm] IFormFile picture, [FromForm] List<string> test)
+        {
+            
+            long length = picture.Length;
+            if (length < 0)
+                return BadRequest();
+
+            using var fileStream = picture.OpenReadStream();
+            byte[] bytes = new byte[length];
+            fileStream.Read(bytes, 0, (int)picture.Length);
+            
+            
+            return Ok();
+        }
     }
 }

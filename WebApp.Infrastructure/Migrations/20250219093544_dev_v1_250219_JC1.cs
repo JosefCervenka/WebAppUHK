@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace WebApp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class dev_v1_250215_JC1 : Migration
+    public partial class dev_v1_250219_JC1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,22 +57,23 @@ namespace WebApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Gallery",
+                name: "Photo",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    AuthorId = table.Column<int>(type: "integer", nullable: true)
+                    ImageId = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Gallery", x => x.Id);
+                    table.PrimaryKey("PK_Photo", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Gallery_User_AuthorId",
-                        column: x => x.AuthorId,
-                        principalTable: "User",
-                        principalColumn: "Id");
+                        name: "FK_Photo_Image_ImageId",
+                        column: x => x.ImageId,
+                        principalTable: "Image",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -102,29 +103,56 @@ namespace WebApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Photo",
+                name: "Recipe",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    PhotoId = table.Column<int>(type: "integer", nullable: false),
-                    ImageId = table.Column<int>(type: "integer", nullable: false),
-                    GalleryId = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false)
+                    AuthorId = table.Column<int>(type: "integer", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Text = table.Column<string>(type: "text", nullable: false),
+                    HeaderPhotoId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Photo", x => x.Id);
+                    table.PrimaryKey("PK_Recipe", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Photo_Gallery_GalleryId",
-                        column: x => x.GalleryId,
-                        principalTable: "Gallery",
+                        name: "FK_Recipe_Photo_HeaderPhotoId",
+                        column: x => x.HeaderPhotoId,
+                        principalTable: "Photo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Photo_Image_ImageId",
-                        column: x => x.ImageId,
-                        principalTable: "Image",
+                        name: "FK_Recipe_User_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comment",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    AuthorId = table.Column<int>(type: "integer", nullable: false),
+                    Text = table.Column<string>(type: "text", nullable: false),
+                    RecipeId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comment", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comment_Recipe_RecipeId",
+                        column: x => x.RecipeId,
+                        principalTable: "Recipe",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comment_User_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -139,19 +167,29 @@ namespace WebApp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Gallery_AuthorId",
-                table: "Gallery",
+                name: "IX_Comment_AuthorId",
+                table: "Comment",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photo_GalleryId",
-                table: "Photo",
-                column: "GalleryId");
+                name: "IX_Comment_RecipeId",
+                table: "Comment",
+                column: "RecipeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photo_ImageId",
                 table: "Photo",
                 column: "ImageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recipe_AuthorId",
+                table: "Recipe",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recipe_HeaderPhotoId",
+                table: "Recipe",
+                column: "HeaderPhotoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SysRole_Name",
@@ -186,22 +224,25 @@ namespace WebApp.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Photo");
+                name: "Comment");
 
             migrationBuilder.DropTable(
                 name: "UserSysRole");
 
             migrationBuilder.DropTable(
-                name: "Gallery");
-
-            migrationBuilder.DropTable(
-                name: "Image");
+                name: "Recipe");
 
             migrationBuilder.DropTable(
                 name: "SysRole");
 
             migrationBuilder.DropTable(
+                name: "Photo");
+
+            migrationBuilder.DropTable(
                 name: "User");
+
+            migrationBuilder.DropTable(
+                name: "Image");
         }
     }
 }
