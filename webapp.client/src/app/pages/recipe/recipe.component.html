@@ -1,0 +1,9 @@
+<div class="wrapper">
+  @for (item of this.recipes; track item) {
+    <app-recepie-item [recipe]="item">
+
+    </app-recepie-item>
+  } @empty {
+    <span>Recipes are loading ...</span>
+  }
+</div>

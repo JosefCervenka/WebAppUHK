@@ -1,4 +1,4 @@
-﻿export interface Recepie {
+﻿export interface Recipe {
   userId: number;
   title: string;
   text: string;

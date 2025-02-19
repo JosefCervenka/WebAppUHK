@@ -1,7 +1,6 @@
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {NavBarComponent} from "./components/nav-bar/nav-bar.component";
@@ -10,6 +9,8 @@ import {FormsModule} from "@angular/forms";
 import {HomeComponent} from "./pages/home/home.component";
 import {RegistrationComponent} from "./pages/registration/registration.component";
 import {AuthorizedViewComponent} from "./components/authorized-view/authorized-view.component";
+import {RecipeItemComponent} from './components/recipe-item/recipe-item.component';
+import {RecipeComponent} from './pages/recipe/recipe.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,9 @@ import {AuthorizedViewComponent} from "./components/authorized-view/authorized-v
     RegistrationComponent,
     AuthorizedViewComponent,
     AuthorizedViewComponent,
+    RecipeItemComponent,
+    HomeComponent,
+    RecipeComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,

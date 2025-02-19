@@ -17,7 +17,7 @@ builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddScoped<JwtClaimMiddleWare>();
 
 builder.Services.AddScoped<SysUserService>();
-builder.Services.AddScoped<GalleryService>();
+builder.Services.AddScoped<ImageService>();
 
 
 builder.Services

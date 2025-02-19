@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,8 +12,15 @@ namespace WebApp.Core.Models.Common
     {
         public int ImageId { get; set; }
         public Image Image { get; set; }
-        public int GalleryId { get; set; }
-        public Gallery Gallery { get; set; }
         public string Name { get; set; }
+
+        [NotMapped]
+        public string Url
+        {
+            get
+            {
+                return $"/api/image/{ImageId}";
+            }
+        }
     }
 }

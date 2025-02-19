@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using WebApp.Core.Models;
 using WebApp.Core.Models.Common;
+using WebApp.Core.Models.Recipe;
 using WebApp.Core.Models.Sys;
 
 
@@ -55,8 +56,10 @@ namespace WebApp.Infrastructure
         public DbSet<User> User { get; set; }
         public DbSet<SysRole> SysRole { get; set; }
         public DbSet<UserSysRole> UserSysRole { get; set; }
-        public DbSet<Gallery> Gallery { get; set; }
         public DbSet<Image> Image { get; set; }
         public DbSet<Photo> Photo { get; set; }
+        public DbSet<Recipe> Recipe { get; set; }
+        public DbSet<Comment> Comment { get; set; }
+
     }
 }

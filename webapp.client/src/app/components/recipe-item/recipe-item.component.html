@@ -1,0 +1,24 @@
+<!-- recipe.component.html -->
+<div class="recipe-card">
+  <div class="recipe-content">
+    <h2 class="recipe-title">{{ recipe?.title }}</h2>
+
+    <div class="ingredients">
+      {{ recipe?.text }}
+    </div>
+    <br>
+    <span class="action-wrapper">
+        <a href="/recepie/{{recipe?.title}}">
+          Details
+        </a>
+    <app-authorized-view>
+      <ng-template #authorizedView>
+        <a href="/recepie/{{recipe?.title}}">
+          Edit
+        </a>
+      </ng-template>
+    </app-authorized-view>
+
+    </span>
+  </div>
+</div>
