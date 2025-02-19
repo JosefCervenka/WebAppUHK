@@ -10,6 +10,11 @@
   align-items: center;
 }
 
+label{
+  width: 100%;
+  text-align: start;
+}
+
 form{
   display: flex;
   flex-direction: column;

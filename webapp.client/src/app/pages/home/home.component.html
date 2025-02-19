@@ -1,3 +1,20 @@
+<p>
+  <mat-form-field appearance="fill">
+    <mat-label>Fill form field</mat-label>
+    <input matInput placeholder="Placeholder">
+    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+    <mat-hint>Hint</mat-hint>
+  </mat-form-field>
+</p>
+<p>
+  <mat-form-field appearance="outline">
+    <mat-label>Outline form field</mat-label>
+    <input matInput placeholder="Placeholder">
+    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+    <mat-hint>Hint</mat-hint>
+  </mat-form-field>
+</p>
+<mat-divider></mat-divider>
 <div class="container">
 
   <form (submit)="onSubmit($event)">
@@ -10,14 +27,16 @@
     <label for="picture">Upload Picture:</label>
     <input type="file" id="picture" (change)="onFileSelected($event)" required /><br />
 
-    <label for="test">Test:</label>
-    <select name="test" id="test"  [(ngModel)]="test" multiple>
-      <option value="1">Test 1</option>
-      <option value="2">Saab</option>
-      <option value="3">Opel</option>
-      <option value="4">Audi</option>
-    </select>
+    <mat-form-field>
+      <mat-select [formControl]="toppings" multiple>
+        @for (topping of toppingList; track topping) {
+          <mat-option [value]="topping">{{topping}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
 
     <button type="submit">Upload</button>
   </form>
 </div>
+
+

@@ -1,14 +1,26 @@
-<div class="login-container">
+<div class="form">
   <h2>Login</h2>
-  <form (ngSubmit)="onSubmit()">
-    <input type="text" [(ngModel)]="loginData.email" name="Email" placeholder="Email" required>
-    <input type="password" [(ngModel)]="loginData.password" name="password" placeholder="Password" required>
-    <button type="submit">Login</button>
-  </form>
-  <span>
-    Don't have an account? <a href="/register">Create an Account.</a>
-  </span>
-  <span>
-    {{errorMessage}}
-  </span>
+  <mat-form-field >
+    <mat-label>Email</mat-label>
+    <input type="email" matInput [formControl]="emailFormControl" placeholder="Ex. example@email.com">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Enter your password</mat-label>
+    <input matInput [type]="hide() ? 'password' : 'text'" [formControl]="passwordFormControl"/>
+    <button
+      mat-icon-button
+      matSuffix
+      (click)="clickEvent($event)"
+      [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="hide()"
+    >
+      <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+    </mat-form-field>
+
+  <div class="button-row">
+    <button (click)="onSubmit()"  mat-flat-button>Login</button>
+    <a mat-flat-button href="/register">Register</a>
+  </div>
 </div>

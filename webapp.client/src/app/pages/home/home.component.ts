@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {Recipe} from "../../models/Recipe";
 import {HttpClient} from '@angular/common/http';
 import {User} from "../../models/User";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,9 @@ export class HomeComponent {
   selectedFile: File | null = null;
   test:number[] = [];
 
+  toppings = new FormControl('');
+  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
+
   constructor(private http: HttpClient) {}
 
   onFileSelected(event: Event) {
@@ -27,7 +31,7 @@ export class HomeComponent {
 
   onSubmit(event: Event) {
     event.preventDefault();
-
+    console.log(this.toppings)
     if (!this.selectedFile || !this.title || !this.text || !this.test) {
       return;
     }
