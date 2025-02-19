@@ -24,7 +24,7 @@ import {Value} from "sass";
 
 
 export class LoginComponent{
-
+  protected errorMessage: string = '';
   protected passwordFormControl: FormControl = new FormControl('');
   protected emailFormControl: FormControl = new FormControl('');
 
@@ -39,9 +39,6 @@ export class LoginComponent{
   onSubmit() {
     var loginData = {email: this.emailFormControl.value, password: this.passwordFormControl.value};
 
-    console.log(this.passwordFormControl.value)
-    console.log(this.emailFormControl.value)
-
     this.http.post<string>("api/authorization/login", loginData).subscribe(
       (status) => {
         this.http.get<User>('/api/authorization/user').subscribe(
@@ -51,11 +48,12 @@ export class LoginComponent{
           },
           (error) => {
             console.error(error);
+
           }
         );
       },
       (error) => {
-        console.log(error.error)
+        this.errorMessage = error.error.message;
       }
     );
   }
