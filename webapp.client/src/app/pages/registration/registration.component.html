@@ -1,14 +1,66 @@
-<div class="login-container">
-  <h2>Register</h2>
-  <form (ngSubmit)="onSubmit()">
-    <input type="text" [(ngModel)]="registerData.name" name="Name" placeholder="Name" required>
-    <input type="text" [(ngModel)]="registerData.email" name="Email" placeholder="Email" required>
-    <input type="password" [(ngModel)]="registerData.password" name="password" placeholder="Password" required>
-    <input type="password" [(ngModel)]="registerData.passwordAgain" name="password" placeholder="Password Again" required>
-    <button type="submit">Register</button>
+<form class="form" (ngSubmit)="onSubmit()">
+  <h2>Registration</h2>
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input type="email" matInput [formControl]="emailFormControl" placeholder="Ex. example@email.com">
+  </mat-form-field>
 
-    <span>
-      {{errorMessage}}
-    </span>
-  </form>
-</div>
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input type="email" matInput [formControl]="emailFormControl" placeholder="Ex. example@email.com">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput [type]="hide() ? 'password' : 'text'" [formControl]="passwordFormControl"/>
+    <button type="button"
+            mat-icon-button
+            matSuffix
+            (click)="clickEvent($event)"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide()"
+    >
+      <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Confirm password</mat-label>
+    <input matInput [type]="hide() ? 'password' : 'text'" [formControl]="passwordFormControl"/>
+    <button type="button"
+            mat-icon-button
+            matSuffix
+            (click)="clickEvent($event)"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide()"
+    >
+      <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+  </mat-form-field>
+
+
+  @if (errorMessage != ''){
+    <mat-error>{{ this.errorMessage }}</mat-error>
+  }
+  <div class="button-row">
+    <button type="submit" mat-flat-button>Create account</button>
+    <a mat-flat-button href="/register">Login</a>
+  </div>
+</form>
+
+
+
+<!--<div class="login-container">-->
+<!--  <h2>Register</h2>-->
+<!--  <form (ngSubmit)="onSubmit()">-->
+<!--    <input type="text" [(ngModel)]="registerData.name" name="Name" placeholder="Name" required>-->
+<!--    <input type="text" [(ngModel)]="registerData.email" name="Email" placeholder="Email" required>-->
+<!--    <input type="password" [(ngModel)]="registerData.password" name="password" placeholder="Password" required>-->
+<!--    <input type="password" [(ngModel)]="registerData.passwordAgain" name="password" placeholder="Password Again" required>-->
+<!--    <button type="submit">Register</button>-->
+
+<!--    <span>-->
+<!--      {{errorMessage}}-->
+<!--    </span>-->
+<!--  </form>-->
+<!--</div>-->

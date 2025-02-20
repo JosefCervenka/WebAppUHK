@@ -1,6 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {UserRegister} from "../../models/UserRegister";
 import {HttpClient} from "@angular/common/http";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-registration',
@@ -10,6 +11,15 @@ import {HttpClient} from "@angular/common/http";
 export class RegistrationComponent {
   constructor(private http: HttpClient) {
 
+  }
+
+  protected passwordFormControl: FormControl = new FormControl('');
+  protected emailFormControl: FormControl = new FormControl('');
+
+  hide = signal(true);
+  clickEvent(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
   }
 
   protected registerData: UserRegister = {

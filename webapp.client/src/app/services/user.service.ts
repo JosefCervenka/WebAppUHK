@@ -14,6 +14,10 @@ export class UserService {
     this.userSubject.next(user);
   }
 
+  logout(){
+    this.userSubject.next(null);
+  }
+
   getUser() {
     return this.userSubject.value;
   }

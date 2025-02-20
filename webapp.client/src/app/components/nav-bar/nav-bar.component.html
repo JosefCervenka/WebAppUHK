@@ -6,9 +6,9 @@
     <app-authorized-view>
 
       <ng-template #authorizedView>
-        <button mat-button [matMenuTriggerFor]="aboveMenu">{{user?.name}}</button>
+        <button mat-button [matMenuTriggerFor]="aboveMenu">{{this.userService.getUser()?.name}}</button>
         <mat-menu #aboveMenu="matMenu" yPosition="above">
-          <button mat-menu-item>unassign</button>
+          <button mat-menu-item (click)="logout()">unassign</button>
         </mat-menu>
       </ng-template>
 

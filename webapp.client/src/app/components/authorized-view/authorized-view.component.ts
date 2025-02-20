@@ -8,14 +8,9 @@ import {User} from "../../models/User";
   styleUrl: './authorized-view.component.css'
 })
 export class AuthorizedViewComponent {
-  user?: User = undefined;
 
-  constructor(private userService: UserService) {
-    this.userService.user$.subscribe(user => {
-      if (user) {
-        this.user = user;
-      }
-    });
+  constructor(protected userService: UserService) {
+
   }
 
   @ContentChild("authorizedView") authorizedView!: TemplateRef<any>;
