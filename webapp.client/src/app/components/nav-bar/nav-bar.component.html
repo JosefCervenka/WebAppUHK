@@ -1,18 +1,24 @@
 <div>
   <nav class="nav-menu">
-    <a>
-      Home
-    </a>
+    <a mat-button>Home</a>
   </nav>
   <nav class="nav-login">
     <app-authorized-view>
 
       <ng-template #authorizedView>
-        <span> {{user?.name}} </span>
+        <button mat-button [matMenuTriggerFor]="aboveMenu">{{user?.name}}</button>
+        <mat-menu #aboveMenu="matMenu" yPosition="above">
+          <button mat-menu-item>unassign</button>
+        </mat-menu>
       </ng-template>
 
       <ng-template #unauthorizedView>
-        <span><a href="/login">Login</a></span>
+        <button mat-button [matMenuTriggerFor]="aboveMenu">Login</button>
+        <mat-menu #aboveMenu="matMenu" yPosition="above">
+          <a mat-menu-item href="/login">Login</a>
+          <a mat-menu-item href="/register">Register</a>
+        </mat-menu>
+
       </ng-template>
 
     </app-authorized-view>

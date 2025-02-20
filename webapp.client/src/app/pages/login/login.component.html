@@ -1,4 +1,4 @@
-<div class="form">
+<form class="form" (ngSubmit)="onSubmit()">
   <h2>Login</h2>
   <mat-form-field>
     <mat-label>Email</mat-label>
@@ -8,7 +8,7 @@
   <mat-form-field>
     <mat-label>Enter your password</mat-label>
     <input matInput [type]="hide() ? 'password' : 'text'" [formControl]="passwordFormControl"/>
-    <button
+    <button type="button"
       mat-icon-button
       matSuffix
       (click)="clickEvent($event)"
@@ -18,10 +18,11 @@
       <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
     </button>
   </mat-form-field>
+  @if (errorMessage != ''){
   <mat-error>{{ this.errorMessage }}</mat-error>
-
+  }
   <div class="button-row">
-    <button (click)="onSubmit()" mat-flat-button>Login</button>
+    <button type="submit" mat-flat-button>Login</button>
     <a mat-flat-button href="/register">Register</a>
   </div>
-</div>
+</form>

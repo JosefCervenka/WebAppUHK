@@ -1,8 +1,9 @@
 div {
-  background-color: #FF1654;
   color: white;
   display: flex;
   padding: 8px;
+  border-bottom: 2px solid #FF1654;
+  margin-bottom: 20px;
 }
 
 a{
@@ -17,4 +18,8 @@ nav.nav-menu{
 
 nav.nav-login {
   padding-right: max(5vw, 10px);
+}
+
+button.mat-button{
+  color: white;
 }
