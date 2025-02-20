@@ -87,5 +87,16 @@ namespace WebApp.Server.Controllers
                 Message = "Your account was successfully created."
             });
         }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> LogoutAsync()
+        {
+            HttpContext.Response.Cookies.Delete("authorization");
+            
+            return Ok(new
+            {
+                Message = "You are logged out."
+            });
+        }
     }
 }
