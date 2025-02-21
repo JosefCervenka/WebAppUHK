@@ -13,8 +13,11 @@ export class RegistrationComponent {
 
   }
 
-  protected passwordFormControl: FormControl = new FormControl('');
+  protected nameFormControl: FormControl = new FormControl('');
   protected emailFormControl: FormControl = new FormControl('');
+  protected passwordFormControl: FormControl = new FormControl('');
+  protected passwordFormConfirmControl: FormControl = new FormControl('');
+
 
   hide = signal(true);
   clickEvent(event: MouseEvent) {
@@ -22,17 +25,17 @@ export class RegistrationComponent {
     event.stopPropagation();
   }
 
-  protected registerData: UserRegister = {
-    password: "",
-    passwordAgain: "",
-    email: "",
-    name: "",
-  }
   errorMessage?: string;
 
   onSubmit() {
-    console.log("hello")
-    this.http.post<string>("api/authorization/register", this.registerData).subscribe(
+    var registerData: UserRegister = {
+      password: this.passwordFormControl.value,
+      passwordAgain: this.passwordFormConfirmControl.value,
+      email: this.emailFormControl.value,
+      name: this.nameFormControl.value,
+    }
+
+    this.http.post<string>("api/authorization/register", registerData).subscribe(
       (x) => {
         console.log(x);
       },

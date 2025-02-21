@@ -2,9 +2,27 @@
 
 @include mat.core();
 
-$my-primary: mat.define-palette(mat.$pink-palette, 500);
-$my-accent: mat.define-palette(mat.$pink-palette, A200);
-$my-warn: mat.define-palette(mat.$pink-palette);
+$hot-pink-palette: (
+  100: #FFC7D2,
+  200: #FFB6C3,
+  500: #d65db1,
+  700: #FF97A8,
+  contrast: (100: black, 200: black, 500: white, 700: white)
+);
+
+
+$tiffany-blue-palette: (
+  100: #CFF2F1,
+  200: #B8EDEA,
+  500: #2c73d2,
+  700: #86E0DF,
+  contrast: (100: black, 200: black, 500: white, 700: white)
+);
+
+
+$my-primary: mat.define-palette($hot-pink-palette, 500);
+$my-accent: mat.define-palette($tiffany-blue-palette, 500);
+$my-warn: mat.define-palette(mat.$red-palette, 500);
 
 $light-theme: mat.define-light-theme((
   color: (
@@ -32,3 +50,4 @@ body, *{
   margin: 0;
   padding: 0;
 }
+

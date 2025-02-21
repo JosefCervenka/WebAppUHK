@@ -1,15 +1,16 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {LoginComponent} from "./pages/login/login.component";
-import {HomeComponent} from "./pages/home/home.component";
 import {RegistrationComponent} from "./pages/registration/registration.component";
 import {RecipeComponent} from "./pages/recipe/recipe.component";
+import {IngredientComponent} from "./pages/ingredient/ingredient.component";
 
 const routes: Routes = [
+  {path: '', redirectTo:'recipe', pathMatch:'full'},
   {path: "login", component: LoginComponent},
-  {path: "home", component: HomeComponent},
   {path: "register", component: RegistrationComponent},
-  {path: "recipe", component: RecipeComponent}
+  {path: "recipe", component: RecipeComponent},
+  {path: "ingredient", component: IngredientComponent}
 ];
 
 @NgModule({

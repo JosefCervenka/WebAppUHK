@@ -2,7 +2,7 @@
   <h2>Registration</h2>
   <mat-form-field>
     <mat-label>Name</mat-label>
-    <input type="email" matInput [formControl]="emailFormControl" placeholder="Ex. example@email.com">
+    <input type="text" matInput [formControl]="nameFormControl" placeholder="John Doe">
   </mat-form-field>
 
   <mat-form-field>
@@ -26,7 +26,7 @@
 
   <mat-form-field>
     <mat-label>Confirm password</mat-label>
-    <input matInput [type]="hide() ? 'password' : 'text'" [formControl]="passwordFormControl"/>
+    <input matInput [type]="hide() ? 'password' : 'text'" [formControl]="passwordFormConfirmControl"/>
     <button type="button"
             mat-icon-button
             matSuffix
@@ -43,24 +43,7 @@
     <mat-error>{{ this.errorMessage }}</mat-error>
   }
   <div class="button-row">
-    <button type="submit" mat-flat-button>Create account</button>
-    <a mat-flat-button href="/register">Login</a>
+    <button type="submit" mat-flat-button color="primary">Create account</button>
+    <a mat-flat-button href="/login">Login</a>
   </div>
 </form>
-
-
-
-<!--<div class="login-container">-->
-<!--  <h2>Register</h2>-->
-<!--  <form (ngSubmit)="onSubmit()">-->
-<!--    <input type="text" [(ngModel)]="registerData.name" name="Name" placeholder="Name" required>-->
-<!--    <input type="text" [(ngModel)]="registerData.email" name="Email" placeholder="Email" required>-->
-<!--    <input type="password" [(ngModel)]="registerData.password" name="password" placeholder="Password" required>-->
-<!--    <input type="password" [(ngModel)]="registerData.passwordAgain" name="password" placeholder="Password Again" required>-->
-<!--    <button type="submit">Register</button>-->
-
-<!--    <span>-->
-<!--      {{errorMessage}}-->
-<!--    </span>-->
-<!--  </form>-->
-<!--</div>-->

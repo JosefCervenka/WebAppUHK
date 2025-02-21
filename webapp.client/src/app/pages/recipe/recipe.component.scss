@@ -1,10 +1,19 @@
-.wrapper{
+.wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
   padding-left: max(5vw, 10px);
-
   padding-right: max(5vw, 10px);
+
+  .search-field {
+    width: 500px;
+  }
+
+
+
+}
+
+:host {
+  width: 100%;
 }

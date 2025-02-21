@@ -7,7 +7,7 @@ import {HttpClient} from "@angular/common/http";
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
-  styleUrl: './nav-bar.component.css'
+  styleUrl: './nav-bar.component.scss'
 })
 export class NavBarComponent {
   private httpClient: HttpClient
@@ -23,6 +23,5 @@ export class NavBarComponent {
         console.log(message)
       });
     this.userService.logout();
-
   }
 }

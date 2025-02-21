@@ -1,6 +1,13 @@
 <div>
   <nav class="nav-menu">
-    <a mat-button>Home</a>
+    <a href="" mat-button>Recipes</a>
+    <a href="/ingredient" mat-button>Ingrediet</a>
+
+    <app-authorized-view>
+      <ng-template #authorizedView>
+        <a href="add-recipes" mat-button color="primary">Share own recipes</a>
+      </ng-template>
+    </app-authorized-view>
   </nav>
   <nav class="nav-login">
     <app-authorized-view>

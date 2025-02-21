@@ -6,11 +6,12 @@ import {AppComponent} from './app.component';
 import {NavBarComponent} from "./components/nav-bar/nav-bar.component";
 import {LoginComponent} from "./pages/login/login.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HomeComponent} from "./pages/home/home.component";
 import {RegistrationComponent} from "./pages/registration/registration.component";
 import {AuthorizedViewComponent} from "./components/authorized-view/authorized-view.component";
 import {RecipeItemComponent} from './components/recipe-item/recipe-item.component';
 import {RecipeComponent} from './pages/recipe/recipe.component';
+import {IngredientComponent} from './pages/ingredient/ingredient.component'
+
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 
 
@@ -55,13 +56,12 @@ import {CommonModule} from "@angular/common";
     AppComponent,
     NavBarComponent,
     LoginComponent,
-    HomeComponent,
     RegistrationComponent,
     AuthorizedViewComponent,
     AuthorizedViewComponent,
     RecipeItemComponent,
-    HomeComponent,
     RecipeComponent,
+    IngredientComponent,
   ],
   imports: [
     BrowserModule,

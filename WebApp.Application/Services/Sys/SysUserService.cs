@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Net.Mail;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Reflection.Metadata;
 using System.Security.Claims;
@@ -42,7 +43,7 @@ namespace WebApp.Application.Services.Sys
 
         public ClaimsPrincipal GetClaimsFromToken(string token) =>
             _jwtGenerator.ValidateJwtToken(token, _tokenKey, _issuer, _audience);
-        
+
         public async Task<User?> GetUserFromHttpContextAsync(HttpContext httpContext)
         {
             var name = httpContext.User?.Identity?.Name;
@@ -54,6 +55,7 @@ namespace WebApp.Application.Services.Sys
 
             return await _userRepository.GetUserWithRolesAsync(id);
         }
+
         public async Task<(string? token, string StatusMessage)> LoginUserAsync(SysUserLoginDTO userDTO)
         {
             User user = await _userRepository.GetByEmailAsync(userDTO.Email.ToLower());
@@ -77,8 +79,26 @@ namespace WebApp.Application.Services.Sys
             return (null, "Invalid password entered.");
         }
 
-        public async Task<User> RegisterUserAsync(SysUserRegiterDTO userDTO)
+        public async Task<(User? user, string? errorMessage)> RegisterUserAsync(SysUserRegiterDTO userDTO)
         {
+            if (!MailAddress.TryCreate(userDTO.Email, out _))
+                return (null, "Email address is not valid.");
+
+            if (userDTO.Name.Length < 5)
+                return (null, "User name is too short.");
+
+            if (userDTO.Password.Length < 8)
+                return (null, "Password is too short.");
+
+            if (userDTO.Password != userDTO.PasswordAgain)
+                return (null, "Password is not same as password check.");
+
+            if (await _context.User.AnyAsync(x => x.Email == userDTO.Email))
+                return (null, "User with that email already exist.");
+
+            if (await _context.User.AnyAsync(x => x.Name == userDTO.Name))
+                return (null, "User with that name already exist.");
+
             var hash = _passwordHasher.HashPassword(userDTO.Password, out byte[] salt);
 
             User user = new User()
@@ -93,7 +113,7 @@ namespace WebApp.Application.Services.Sys
 
             await _sysRoleRepository.AddUserSysRole(user, (int)SysRoleEnum.User);
 
-            return user;
+            return (user, null);
         }
     }
 }

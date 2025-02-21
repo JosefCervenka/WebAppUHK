@@ -5,7 +5,7 @@ import {HttpClient} from "@angular/common/http";
 @Component({
   selector: 'app-recepie',
   templateUrl: './recipe.component.html',
-  styleUrl: './recipe.component.css'
+  styleUrl: './recipe.component.scss'
 })
 export class RecipeComponent {
   protected recipes?: Recipe[];

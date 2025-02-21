@@ -81,7 +81,22 @@ namespace WebApp.Server.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync([FromBody] SysUserRegiterDTO sysUserRegiter)
         {
-            await _sysUserService.RegisterUserAsync(sysUserRegiter);
+            var response = await _sysUserService.RegisterUserAsync(sysUserRegiter);
+
+            if (response.errorMessage is not null)
+                return BadRequest(new
+                {
+                    Message = response.errorMessage
+                });
+
+            var (token, message) = await _sysUserService.LoginUserAsync(new SysUserLoginDTO
+            {
+                Email = sysUserRegiter.Email,
+                Password = sysUserRegiter.Password,
+            });
+
+            HttpContext.Response.Cookies.Append("authorization", token);
+
             return Ok(new
             {
                 Message = "Your account was successfully created."
@@ -92,7 +107,7 @@ namespace WebApp.Server.Controllers
         public async Task<IActionResult> LogoutAsync()
         {
             HttpContext.Response.Cookies.Delete("authorization");
-            
+
             return Ok(new
             {
                 Message = "You are logged out."
