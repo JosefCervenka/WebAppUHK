@@ -13,10 +13,9 @@
 
       </mat-form-field>
     </div>
-
-
   </div>
 
+  <div class="recipe-container">
   @for (item of this.recipes; track item) {
     <app-recepie-item [recipe]="item">
 
@@ -24,4 +23,5 @@
   } @empty {
     <span>Recipes are loading ...</span>
   }
+  </div>
 </div>
