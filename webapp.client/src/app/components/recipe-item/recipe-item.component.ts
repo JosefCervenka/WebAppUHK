@@ -12,5 +12,6 @@ export class RecipeItemComponent {
   @Input() recipe?: Recipe;
 
   constructor(private http: HttpClient) {
+
   }
 }

@@ -2,9 +2,9 @@
 
 namespace WebApp.Server.Controllers;
 
-public class Ingredient : ControllerBase
+public class IngredientController : ControllerBase
 {
-    public Ingredient()
+    public IngredientController()
     {
         
     }

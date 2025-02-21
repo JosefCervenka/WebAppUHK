@@ -48,7 +48,8 @@ import {MatTreeModule} from '@angular/material/tree';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatDividerModule} from "@angular/material/divider";
 import {MatBadgeModule} from "@angular/material/badge";
-import {CommonModule} from "@angular/common";
+import {CommonModule, NgOptimizedImage} from "@angular/common";
+import { RecipeAddComponent } from './pages/recipe-add/recipe-add.component';
 
 
 @NgModule({
@@ -62,6 +63,7 @@ import {CommonModule} from "@angular/common";
     RecipeItemComponent,
     RecipeComponent,
     IngredientComponent,
+    RecipeAddComponent,
   ],
   imports: [
     BrowserModule,
@@ -104,7 +106,8 @@ import {CommonModule} from "@angular/common";
     MatTreeModule,
     MatBottomSheetModule,
     MatDividerModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgOptimizedImage
   ],
   providers: [
     provideAnimationsAsync()

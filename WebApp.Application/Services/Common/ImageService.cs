@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using WebApp.Application.Services.Common.Models;
 using WebApp.Application.Utils;
 using WebApp.Core.Models.Common;
@@ -26,22 +27,42 @@ namespace WebApp.Application.Services.Common
             _base64Decoder = new Base64Decoder();
         }
 
-        public async Task AddPhotoAsync(PhotoBase64DTO photo, string name)
+        public async Task<(Image? image, string? message)> CreateImageAsync(IFormFile photo)
         {
-            var rawData = _base64Decoder.Decode(photo.Image, out string type);
-
-            var image = new Image()
+            if (photo == null || photo.Length == 0)
             {
-                Type = type,
-                Data = rawData
+                return (null, "Not allow file.");
+            }
+            
+            var allowedTypes = new HashSet<string>
+            {
+                "image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp"
             };
+            
+            var extension = Path.GetExtension(photo.FileName)?.ToLower();
+            
+            var allowedExtensions = new HashSet<string> { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp" };
 
-            await _photoRepository.AddAsync(new Photo
+            if (!allowedTypes.Contains(photo.ContentType) || !allowedExtensions.Contains(extension))
             {
-                Image = image, 
-                Name = name,
-            });
+                return (null, "Not allow file.");
+            }
+
+            using (var memoryStream = new MemoryStream())
+            {
+                await photo.CopyToAsync(memoryStream);
+
+                Image image = new Image()
+                {
+                    Data = memoryStream.ToArray(),
+                    Type = photo.ContentType
+                };
+
+                return (image, null);
+            }
         }
+        
+        
         public async Task<Image> GetImageAsync(int id)
         {
             return await _photoRepository.GetImageAsync(id);

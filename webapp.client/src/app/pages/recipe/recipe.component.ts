@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {Recipe} from "../../models/Recipe";
 import {HttpClient} from "@angular/common/http";
+import {CdkVirtualScrollableWindow} from "@angular/cdk/scrolling";
 
 @Component({
   selector: 'app-recepie',
@@ -13,8 +14,9 @@ export class RecipeComponent {
   constructor(private httpClient: HttpClient) {
   }
   ngOnInit() {
-    this.httpClient.get<Recipe[]>("api/recepie").subscribe(
+    this.httpClient.get<Recipe[]>("api/recipe").subscribe(
       (recipes) => {
+        console.log(recipes)
         this.recipes  = recipes;
       },
     );

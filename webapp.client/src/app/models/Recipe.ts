@@ -1,6 +1,8 @@
-﻿export interface Recipe {
+﻿import {Photo} from "./Photo";
+
+export interface Recipe {
   userId: number;
   title: string;
   text: string;
-  galleryId: string;
+  headerPhoto: Photo;
 }

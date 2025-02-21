@@ -21,7 +21,7 @@ namespace WebApp.Server.Controllers
             if (image is null)
                 return BadRequest("Image does not exist.");
 
-            return File(image.Data, $"image/{image.Type}");
+            return File(image.Data, image.Type);
         }
     }
 }

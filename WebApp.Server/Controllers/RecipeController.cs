@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApp.Application.Services.Common;
+using WebApp.Application.Services.Sys;
+using WebApp.Core.Models.Common;
+using WebApp.Core.Models.Recipe;
 using WebApp.Infrastructure;
 
 namespace WebApp.Server.Controllers
@@ -8,10 +13,14 @@ namespace WebApp.Server.Controllers
     public class RecipeController : ControllerBase
     {
         private AppDbContext _context;
+        private SysUserService _sysUserService;
+        private ImageService _imageService;
 
-        public RecipeController(AppDbContext context)
+        public RecipeController(AppDbContext context, SysUserService sysUserService, ImageService imageService)
         {
             _context = context;
+            _sysUserService = sysUserService;
+            _imageService = imageService;
         }
 
         [HttpGet("{id}")]
@@ -36,18 +45,43 @@ namespace WebApp.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromForm] string title, [FromForm] string description, [FromForm] IFormFile picture, [FromForm] List<string> test)
+        [Authorize]
+        public async Task<IActionResult> Post([FromForm] string title, [FromForm] string text, [FromForm] IFormFile picture)
         {
-            
-            long length = picture.Length;
-            if (length < 0)
-                return BadRequest();
+            var image = await _imageService.CreateImageAsync(picture);
 
-            using var fileStream = picture.OpenReadStream();
-            byte[] bytes = new byte[length];
-            fileStream.Read(bytes, 0, (int)picture.Length);
-            
-            
+            if (image.image == null)
+                return BadRequest(new
+                {
+                    Message = image.message
+                });
+
+            if (string.IsNullOrEmpty(title))
+                return BadRequest(new
+                {
+                    Message = "Title cannot be empty!"
+                });
+
+            if (string.IsNullOrEmpty(text))
+                return BadRequest(new
+                {
+                    Message = "Text cannot be empty!"
+                });
+
+            var recipe = new Recipe()
+            {
+                Author = await _sysUserService.GetUserFromHttpContextAsync(HttpContext),
+                Title = title,
+                Text = text,
+                HeaderPhoto = new Photo()
+                {
+                    Name = picture.Name,
+                    Image = image.image,
+                },
+            };
+
+            await _context.Recipe.AddAsync(recipe);
+            await _context.SaveChangesAsync();
             return Ok();
         }
     }

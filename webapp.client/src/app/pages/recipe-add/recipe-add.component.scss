@@ -1,0 +1,16 @@
+form{
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+}
+.file-upload-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.button-row{
+  margin-top: 10px;
+  flex: 1;
+  display: flex;
+  justify-content: end;
+}
