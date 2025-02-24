@@ -11,7 +11,7 @@
   <div class="file-upload-container">
     <input type="file" #fileInput hidden (change)="onFileSelected($event)">
 
-    <button mat-raised-button (click)="fileInput.click()">
+    <button type="button" mat-raised-button (click)="fileInput.click()">
       <mat-icon>upload</mat-icon> Select File
     </button>
 

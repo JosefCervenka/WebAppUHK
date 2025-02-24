@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {FormControl, FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
+import {Recipe} from "../../models/Recipe";
+import {IdObject} from "../../models/IdObject";
 
 @Component({
   selector: 'app-recipe-add',
@@ -23,8 +25,10 @@ export class RecipeAddComponent {
     formData.append("title", this.titleForm.value)
     formData.append("text", this.textForm.value)
 
-    this.http.post("api/recipe", formData).subscribe(response => {
+    this.http.post<IdObject>("api/recipe", formData).subscribe(response => {
+      console.log(response);
 
+        this.router.navigate(['/recipe', response.id]);
       },
       error => {
 

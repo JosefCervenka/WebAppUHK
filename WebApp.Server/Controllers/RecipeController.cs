@@ -82,7 +82,10 @@ namespace WebApp.Server.Controllers
 
             await _context.Recipe.AddAsync(recipe);
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(new
+            {
+                Id = recipe.Id,
+            });
         }
     }
 }
