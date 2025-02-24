@@ -113,7 +113,15 @@ namespace WebApp.Application.Services.Sys
 
             await _sysRoleRepository.AddUserSysRole(user, (int)SysRoleEnum.User);
 
+            await _context.SaveChangesAsync();
+
             return (user, null);
+        }
+
+        public async Task<User?> GetUserByIdAsync(int id)
+        {
+            User user = await _userRepository.GetAsync(id);
+            return user;
         }
     }
 }

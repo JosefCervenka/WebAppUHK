@@ -3,7 +3,7 @@ import {UserService} from "../../services/user.service";
 import {User} from "../../models/User";
 import {AuthorizedViewComponent} from "../authorized-view/authorized-view.component";
 import {HttpClient} from "@angular/common/http";
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',

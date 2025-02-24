@@ -20,6 +20,22 @@ namespace WebApp.Server.Controllers
             _sysUserService = sysUserService;
         }
 
+        [HttpGet("/api/user/{id:int}")]
+        public async Task<IActionResult> getSimpleUserInfo(int id)
+        {
+            var user = await _sysUserService.GetUserByIdAsync(id);
+
+            if (user is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(new
+            {
+                Name = user.Name,
+            });
+        }
+
         [HttpGet("user")]
         [Authorize]
         public async Task<IActionResult> Get()
@@ -36,7 +52,7 @@ namespace WebApp.Server.Controllers
             }
             catch (Exception)
             {
-                return BadRequest(new { message = "User was not found." });
+                return NotFound(new { message = "User was not found." });
             }
         }
 
@@ -81,26 +97,14 @@ namespace WebApp.Server.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync([FromBody] SysUserRegiterDTO sysUserRegiter)
         {
-            var response = await _sysUserService.RegisterUserAsync(sysUserRegiter);
+            var user = await _sysUserService.RegisterUserAsync(sysUserRegiter);
 
-            if (response.errorMessage is not null)
-                return BadRequest(new
-                {
-                    Message = response.errorMessage
-                });
-
-            var (token, message) = await _sysUserService.LoginUserAsync(new SysUserLoginDTO
+            if (user.errorMessage is not null)
             {
-                Email = sysUserRegiter.Email,
-                Password = sysUserRegiter.Password,
-            });
+                return BadRequest(new { message = user.errorMessage });
+            }
 
-            HttpContext.Response.Cookies.Append("authorization", token);
-
-            return Ok(new
-            {
-                Message = "Your account was successfully created."
-            });
+            return Ok(user);
         }
 
         [HttpPost("logout")]

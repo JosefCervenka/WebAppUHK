@@ -50,6 +50,7 @@ import {MatDividerModule} from "@angular/material/divider";
 import {MatBadgeModule} from "@angular/material/badge";
 import {CommonModule, NgOptimizedImage} from "@angular/common";
 import { RecipeAddComponent } from './pages/recipe-add/recipe-add.component';
+import { RecipeDetailComponent } from './pages/recipe-detail/recipe-detail.component';
 
 
 @NgModule({
@@ -64,6 +65,7 @@ import { RecipeAddComponent } from './pages/recipe-add/recipe-add.component';
     RecipeComponent,
     IngredientComponent,
     RecipeAddComponent,
+    RecipeDetailComponent,
   ],
   imports: [
     BrowserModule,

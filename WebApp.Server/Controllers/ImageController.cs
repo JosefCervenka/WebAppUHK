@@ -19,9 +19,9 @@ namespace WebApp.Server.Controllers
             var image = await _imageService.GetImageAsync(id);
 
             if (image is null)
-                return BadRequest("Image does not exist.");
+                return NotFound("Image does not exist.");
 
-            return File(image.Data, image.Type);
+            return File(image.Data, $"{image.Type}");
         }
     }
 }

@@ -1,11 +1,11 @@
 <div>
   <nav class="nav-menu">
-    <a href="" mat-button>Recipes</a>
-    <a href="/ingredient" mat-button>Ingrediet</a>
+    <a routerLink="" mat-button>Recipes</a>
+    <a routerLink="/ingredient" mat-button>Ingrediet</a>
 
     <app-authorized-view>
       <ng-template #authorizedView>
-        <a href="recipe/add" mat-button color="primary">Share own recipes</a>
+        <a routerLink="recipe/add" mat-button color="primary">Share own recipes</a>
       </ng-template>
     </app-authorized-view>
   </nav>
@@ -22,8 +22,8 @@
       <ng-template #unauthorizedView>
         <button mat-button [matMenuTriggerFor]="aboveMenu">Login</button>
         <mat-menu #aboveMenu="matMenu" yPosition="above">
-          <a mat-menu-item href="/login">Login</a>
-          <a mat-menu-item href="/register">Register</a>
+          <a mat-menu-item routerLink="/login">Login</a>
+          <a mat-menu-item routerLink="/register">Register</a>
         </mat-menu>
 
       </ng-template>
