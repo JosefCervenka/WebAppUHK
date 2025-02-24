@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {FormControl, FormGroup} from "@angular/forms";
-import {F} from "@angular/cdk/keycodes";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-recipe-add',
@@ -13,7 +13,8 @@ export class RecipeAddComponent {
 
   protected titleForm: FormControl = new FormControl('');
   protected textForm: FormControl = new FormControl('');
-  constructor(protected http: HttpClient) {
+
+  constructor(protected http: HttpClient, private router: Router) {
   }
 
   onPost() {
@@ -24,10 +25,10 @@ export class RecipeAddComponent {
 
     this.http.post("api/recipe", formData).subscribe(response => {
 
-    },
-    error => {
+      },
+      error => {
 
-    })
+      })
   }
 
   onFileSelected(event: Event) {
