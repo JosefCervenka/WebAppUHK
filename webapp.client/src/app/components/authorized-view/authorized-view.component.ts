@@ -5,7 +5,6 @@ import {User} from "../../models/User";
 @Component({
   selector: 'app-authorized-view',
   templateUrl: './authorized-view.component.html',
-  styleUrl: './authorized-view.component.css'
 })
 export class AuthorizedViewComponent {
 
