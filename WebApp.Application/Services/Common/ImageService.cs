@@ -63,7 +63,7 @@ namespace WebApp.Application.Services.Common
         }
         
         
-        public async Task<Image> GetImageAsync(int id)
+        public async Task<Image?> GetImageAsync(int id)
         {
             return await _photoRepository.GetImageAsync(id);
         }

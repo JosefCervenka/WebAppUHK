@@ -79,19 +79,18 @@ namespace WebApp.Server.Controllers
         {
             var (token, message) = await _sysUserService.LoginUserAsync(sysUserLogin);
 
-            if (token is not null)
-            {
-                HttpContext.Response.Cookies.Append("authorization", token);
-                return Ok(new
+            if (token is null)
+                return BadRequest(new
                 {
                     Message = message
                 });
-            }
-
-            return BadRequest(new
+            
+            HttpContext.Response.Cookies.Append("authorization", token);
+            return Ok(new
             {
                 Message = message
             });
+
         }
 
         [HttpPost("register")]

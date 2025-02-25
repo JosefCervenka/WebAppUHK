@@ -70,7 +70,7 @@ namespace WebApp.Server.Controllers
 
             var recipe = new Recipe()
             {
-                Author = await _sysUserService.GetUserFromHttpContextAsync(HttpContext),
+                Author = (await _sysUserService.GetUserFromHttpContextAsync(HttpContext))!,
                 Title = title,
                 Text = text,
                 HeaderPhoto = new Photo()

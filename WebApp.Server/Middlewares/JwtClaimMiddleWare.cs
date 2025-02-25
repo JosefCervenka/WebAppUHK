@@ -21,11 +21,7 @@ namespace WebApp.Server.Middlewares
             {
                 context.User = _sysUserService.GetClaimsFromToken(token);
             }
-            else
-            {
-                var claims = new ClaimsPrincipal();
-            }
-
+            
             await next.Invoke(context);
         }
     }
