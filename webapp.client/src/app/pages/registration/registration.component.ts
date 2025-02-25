@@ -37,7 +37,6 @@ export class RegistrationComponent {
       passwordAgain: this.passwordFormConfirmControl.value,
       email: this.emailFormControl.value,
       name: this.nameFormControl.value,
-
     }
 
     var login = {
