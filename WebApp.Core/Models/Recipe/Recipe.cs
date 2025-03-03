@@ -25,5 +25,7 @@ namespace WebApp.Core.Models.Recipe
         public Photo HeaderPhoto { get; set; }
 
         public List<Comment> Comments { get; set; }
+
+        public List<Step> Steps { get; set; }
     }
 }

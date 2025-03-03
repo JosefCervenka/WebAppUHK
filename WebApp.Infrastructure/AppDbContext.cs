@@ -60,6 +60,7 @@ namespace WebApp.Infrastructure
         public DbSet<Photo> Photo { get; set; }
         public DbSet<Recipe> Recipe { get; set; }
         public DbSet<Comment> Comment { get; set; }
+        public DbSet<Step> Step { get; set; }
 
     }
 }
