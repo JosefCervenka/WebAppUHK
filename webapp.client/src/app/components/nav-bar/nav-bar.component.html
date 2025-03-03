@@ -8,6 +8,12 @@
         <a routerLink="recipe/add" mat-button color="primary">Share own recipes</a>
       </ng-template>
     </app-authorized-view>
+
+    <app-authorized-view [role]="'Admin'">
+      <ng-template #authorizedView>
+        <a routerLink="recipe/add" mat-button color="primary">Share own recipes</a>
+      </ng-template>
+    </app-authorized-view>
   </nav>
   <nav class="nav-login">
     <app-authorized-view>

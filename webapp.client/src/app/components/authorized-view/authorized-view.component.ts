@@ -1,4 +1,4 @@
-import {Component, ContentChild, TemplateRef} from '@angular/core';
+import {Component, ContentChild, Input, TemplateRef} from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {User} from "../../models/User";
 
@@ -8,8 +8,9 @@ import {User} from "../../models/User";
 })
 export class AuthorizedViewComponent {
 
+  @Input() role: string | null;
   constructor(protected userService: UserService) {
-
+    this.role = null;
   }
 
   @ContentChild("authorizedView") authorizedView!: TemplateRef<any>;
