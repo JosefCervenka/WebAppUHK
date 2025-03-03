@@ -13,17 +13,31 @@ import {IdObject} from "../../models/IdObject";
 export class RecipeAddComponent {
   protected selectedFile: File | null = null;
 
-  protected titleForm: FormControl = new FormControl('');
-  protected textForm: FormControl = new FormControl('');
+  protected titleForm: FormControl = new FormControl("");
+  protected textForm: FormControl = new FormControl("");
+  protected stepForms: FormControl[] = [];
+
 
   constructor(protected http: HttpClient, private router: Router) {
   }
 
+  addStep()
+  {
+    this.stepForms.push(new FormControl(""));
+  }
+
+  removeStep(){
+    this.stepForms.pop();
+  }
   onPost() {
     let formData: FormData = new FormData();
     formData.append("picture", this.selectedFile as Blob)
     formData.append("title", this.titleForm.value)
     formData.append("text", this.textForm.value)
+
+    for (let stepForm in this.stepForms) {
+      formData.append("steps", this.stepForms[stepForm].value);
+    }
 
     this.http.post<IdObject>("api/recipe", formData).subscribe(response => {
       console.log(response);
@@ -41,4 +55,6 @@ export class RecipeAddComponent {
       this.selectedFile = input.files[0];
     }
   }
+
+  protected readonly FormControl = FormControl;
 }

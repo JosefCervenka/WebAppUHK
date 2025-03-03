@@ -1,6 +1,4 @@
-﻿import {UserRole} from "./UserRole";
-
-export interface User {
+﻿export interface User {
   name: string;
   email: string;
   userRoles: string[];

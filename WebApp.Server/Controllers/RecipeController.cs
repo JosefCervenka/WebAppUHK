@@ -46,7 +46,7 @@ namespace WebApp.Server.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Post([FromForm] string title, [FromForm] string text, [FromForm] IFormFile picture)
+        public async Task<IActionResult> Post([FromForm] string title, [FromForm] string text, [FromForm] IFormFile picture, [FromForm] List<string> steps)
         {
             var image = await _imageService.CreateImageAsync(picture);
 

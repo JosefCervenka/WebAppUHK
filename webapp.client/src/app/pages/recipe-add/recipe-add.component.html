@@ -4,7 +4,7 @@
     <input [formControl]="titleForm" matInput>
   </mat-form-field>
   <mat-form-field>
-    <mat-label>Textarea</mat-label>
+    <mat-label>Description</mat-label>
     <textarea [formControl]="textForm" matInput rows="10"></textarea>
   </mat-form-field>
 
@@ -12,11 +12,28 @@
     <input type="file" #fileInput hidden (change)="onFileSelected($event)">
 
     <button type="button" mat-raised-button (click)="fileInput.click()">
-      <mat-icon>upload</mat-icon> Select File
+      <mat-icon>upload</mat-icon>
+      Select File
     </button>
 
     <span *ngIf="selectedFile">{{ selectedFile?.name }}</span>
   </div>
+
+  @for (item of this.stepForms; track item; let i = $index) {
+    <mat-form-field>
+      <mat-label>Step: {{ i + 1 }}</mat-label>
+      <textarea [formControl]="item" matInput rows="5"></textarea>
+    </mat-form-field>
+
+  }
+  <div class="button-row">
+    <button type="button" (click)="addStep()" mat-button color="primary">Add step</button>
+
+    @if (this.stepForms.length != 0) {
+      <button type="button" (click)="removeStep()" mat-button color="warn">Remove step</button>
+    }
+  </div>
+
 
   <div class="button-row">
     <button type="submit" mat-flat-button color="primary">Share it!</button>
