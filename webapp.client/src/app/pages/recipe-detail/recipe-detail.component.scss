@@ -1,0 +1,50 @@
+.wrapper{
+  padding-left: max(5vw, 10px);
+  padding-right: max(5vw, 10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.main-card{
+  width: 400px;
+}
+
+:host {
+  width: 100%;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-field {
+  flex: 1;
+  min-width: 200px;
+}
+
+
+
+.form-fields {
+  width: 500px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: start;
+  align-items: end;
+  flex-direction: column;
+}
+
+.form{
+  width: 500px;
+}
+
+.button-row{
+  display: flex;
+  gap: 10px;
+}
+.main-card{
+  width: 100%;
+}

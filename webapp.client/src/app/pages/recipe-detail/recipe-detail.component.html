@@ -1,2 +1,33 @@
-<p>recipe-detail works!</p>
-{{this.id}}
+<div class="wrapper">
+  <mat-card class="main-card" style="width: 400px" appearance="outlined">
+
+    <mat-card-header>
+      <mat-card-title>{{ this.recipe?.title }}</mat-card-title>
+      <mat-card-subtitle>{{ this.author?.name }}</mat-card-subtitle>
+    </mat-card-header>
+    <br>
+
+    @if (imageUrl != null) {
+      <img [src]="imageUrl" alt="{{recipe?.title}}"/>
+    }
+    <br>
+    <mat-card-content>
+      <p>{{ this.recipe?.text }}</p>
+
+      @for (item of this.recipe?.steps; track item; let i = $index) {
+        <mat-list>
+          <b><strong>Step: {{ i + 1 }}</strong></b>
+          <ul>{{ item.text }}</ul>
+        </mat-list>
+        <br>
+      }
+
+    </mat-card-content>
+    <mat-card-actions align="end">
+
+    </mat-card-actions>
+  </mat-card>
+
+  <br>
+</div>
+

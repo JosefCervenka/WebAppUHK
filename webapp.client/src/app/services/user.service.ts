@@ -27,9 +27,6 @@ export class UserService {
   }
 
   containRole(role: string) {
-    console.log(role);
-    console.log(this.userSubject.value);
-    console.log(this.userSubject.value?.userRoles);
     return this.userSubject.value?.userRoles
       .some(x => x === role);
   }

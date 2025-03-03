@@ -29,7 +29,13 @@ namespace WebApp.Server.Controllers
             var recepie = await _context.Recipe
                 .Include(x => x.Comments)
                 .Include(x => x.HeaderPhoto)
+                .Include(x => x.Steps)
                 .FirstOrDefaultAsync(x => x.Id == id);
+            
+            foreach (var recepieStep in recepie.Steps)
+            {
+                recepieStep.Recipe = null;
+            }
 
             return Ok(recepie);
         }
@@ -49,6 +55,13 @@ namespace WebApp.Server.Controllers
         public async Task<IActionResult> Post([FromForm] string title, [FromForm] string text, [FromForm] IFormFile picture, [FromForm] List<string> steps)
         {
             var image = await _imageService.CreateImageAsync(picture);
+
+            if (steps is null or [])
+                return BadRequest(new
+                {
+                    Message = "Steps cannot be empty. Add at least one step!"
+                });
+
 
             if (image.image == null)
                 return BadRequest(new
@@ -78,6 +91,10 @@ namespace WebApp.Server.Controllers
                     Name = picture.Name,
                     Image = image.image,
                 },
+                Steps = steps.Select(x => new Step
+                {
+                    Text = x,
+                }).ToList()
             };
 
             await _context.Recipe.AddAsync(recipe);
