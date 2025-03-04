@@ -49,6 +49,38 @@ namespace WebApp.Infrastructure
                 }
             );
             #endregion
+            modelBuilder.Entity<Unit>().HasData(
+                new Unit { Id = 1, Name = "ks" },
+                new Unit { Id = 2, Name = "g" },
+                new Unit { Id = 3, Name = "kg" },
+                new Unit { Id = 4, Name = "ml" },
+                new Unit { Id = 5, Name = "dl" },
+                new Unit { Id = 6, Name = "l" },
+                new Unit { Id = 7, Name = "balení" },
+                new Unit { Id = 8, Name = "balíček" },
+                new Unit { Id = 9, Name = "hrnek" },
+                new Unit { Id = 10, Name = "hrst" },
+                new Unit { Id = 11, Name = "kalíšek" },
+                new Unit { Id = 12, Name = "kelímek" },
+                new Unit { Id = 13, Name = "kostka" },
+                new Unit { Id = 14, Name = "lahev" },
+                new Unit { Id = 15, Name = "lžička" },
+                new Unit { Id = 16, Name = "lžíce" },
+                new Unit { Id = 17, Name = "miska" },
+                new Unit { Id = 18, Name = "plátek" },
+                new Unit { Id = 19, Name = "plechovka" },
+                new Unit { Id = 20, Name = "sklenice" },
+                new Unit { Id = 21, Name = "snítka" },
+                new Unit { Id = 22, Name = "stroužek" },
+                new Unit { Id = 23, Name = "svazek" },
+                new Unit { Id = 24, Name = "šálek" },
+                new Unit { Id = 25, Name = "špetka" },
+                new Unit { Id = 26, Name = "krajíc" },
+                new Unit { Id = 27, Name = "stonek" }
+            );
+            #region unit
+
+            #endregion
 
 
             base.OnModelCreating(modelBuilder);
@@ -62,7 +94,7 @@ namespace WebApp.Infrastructure
         public DbSet<Comment> Comment { get; set; }
         public DbSet<Step> Step { get; set; }
         public DbSet<Ingredient> Ingredient { get; set; }
-        public DbSet<Unit> Units { get; set; }
+        public DbSet<Unit> Unit { get; set; }
 
     }
 }
