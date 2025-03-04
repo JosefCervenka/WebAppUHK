@@ -27,5 +27,7 @@ namespace WebApp.Core.Models.Recipe
         public List<Comment> Comments { get; set; }
 
         public List<Step> Steps { get; set; }
+
+        public List<Ingredient> Ingredients { get; set; }
     }
 }

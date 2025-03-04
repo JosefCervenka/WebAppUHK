@@ -61,6 +61,8 @@ namespace WebApp.Infrastructure
         public DbSet<Recipe> Recipe { get; set; }
         public DbSet<Comment> Comment { get; set; }
         public DbSet<Step> Step { get; set; }
+        public DbSet<Ingredient> Ingredient { get; set; }
+        public DbSet<Unit> Units { get; set; }
 
     }
 }

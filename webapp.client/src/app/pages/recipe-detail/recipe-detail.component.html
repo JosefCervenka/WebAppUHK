@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <mat-card class="main-card" style="width: 400px" appearance="outlined">
+  <mat-card class="main-card" style="width: 900px" appearance="outlined">
 
     <mat-card-header>
       <mat-card-title>{{ this.recipe?.title }}</mat-card-title>
@@ -14,13 +14,26 @@
     <mat-card-content>
       <p>{{ this.recipe?.text }}</p>
 
-      @for (item of this.recipe?.steps; track item; let i = $index) {
-        <mat-list>
-          <b><strong>Step: {{ i + 1 }}</strong></b>
-          <ul>{{ item.text }}</ul>
-        </mat-list>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            <span>Steps</span>
+          </mat-card-title>
+        </mat-card-header>
         <br>
-      }
+        <mat-card-content>
+          @for (item of this.recipe?.steps; track item; let i = $index) {
+            <mat-card appearance="outlined">
+              <mat-card-content>
+                <div>
+                  <p>{{ item.text }}</p>
+                </div>
+              </mat-card-content>
+            </mat-card>
+            <br>
+          }
+        </mat-card-content>
+      </mat-card>
 
     </mat-card-content>
     <mat-card-actions align="end">
