@@ -26,7 +26,7 @@ export class RecipeDetailComponent {
     });
     this.http.get<Recipe>(`api/recipe/${this.id}`).subscribe((recipe: Recipe) => {
         this.recipe = recipe;
-
+        console.log(recipe)
         this.http.get(this.recipe.headerPhoto.url, {responseType: 'blob'}).subscribe(imageFile => {
           console.log(imageFile);
           this.imageUrl = URL.createObjectURL(imageFile);

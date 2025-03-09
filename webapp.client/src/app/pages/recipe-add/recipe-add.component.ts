@@ -4,6 +4,8 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
 import {Recipe} from "../../models/Recipe";
 import {IdObject} from "../../models/IdObject";
+import {IngredientComponent} from "../ingredient/ingredient.component";
+import {Unit} from "../../models/Unit";
 
 @Component({
   selector: 'app-recipe-add',
@@ -15,10 +17,41 @@ export class RecipeAddComponent {
 
   protected titleForm: FormControl = new FormControl("");
   protected textForm: FormControl = new FormControl("");
-  protected stepForms: FormControl[] = [];
 
+  protected stepForms: FormControl[] = [new FormControl("")];
+
+  protected ingredientsForms: FormControl[] = [new FormControl("")];
+  protected countForms: FormControl[] = [new FormControl("")];
+  protected unitForms: FormControl[] = [new FormControl("")];
+
+  protected units: Unit[] = []
+
+
+  ngOnInit() {
+    this.http.get<Unit[]>("api/unit").subscribe(
+      (units) => {
+        console.log(units)
+        this.units = units;
+      },
+    );
+  }
 
   constructor(protected http: HttpClient, private router: Router) {
+  }
+
+  addIngredients(){
+    this.ingredientsForms.push(new FormControl(""));
+    this.unitForms.push(new FormControl(""));
+    this.countForms.push(new FormControl(""))
+  }
+
+  removeIngredients(){
+    if(this.ingredientsForms.length == 1)
+      return;
+
+    this.ingredientsForms.pop();
+    this.unitForms.pop();
+    this.countForms.pop();
   }
 
   addStep()
@@ -27,6 +60,9 @@ export class RecipeAddComponent {
   }
 
   removeStep(){
+    if(this.stepForms.length == 1)
+      return;
+
     this.stepForms.pop();
   }
   onPost() {
@@ -38,6 +74,16 @@ export class RecipeAddComponent {
     for (let stepForm in this.stepForms) {
       formData.append("steps", this.stepForms[stepForm].value);
     }
+    for (let unitForm in this.unitForms) {
+      formData.append("unitIds", this.unitForms[unitForm].value);
+    }
+    for (let countForm in this.countForms) {
+      formData.append("counts", this.countForms[countForm].value);
+    }
+    for (let ingredientsForm in this.ingredientsForms) {
+      formData.append("ingredients", this.ingredientsForms[ingredientsForm].value);
+    }
+
 
     this.http.post<IdObject>("api/recipe", formData).subscribe(response => {
       console.log(response);
@@ -58,3 +104,4 @@ export class RecipeAddComponent {
 
   protected readonly FormControl = FormControl;
 }
+

@@ -13,6 +13,7 @@ namespace WebApp.Core.Models.Recipe
         public int UnitId { get; set; }
         public Unit Unit { get; set; }
         public double Count { get; set; }
+        
         public int RecipeId { get; set; }
         public Recipe Recipe { get; set; }
     }

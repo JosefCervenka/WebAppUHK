@@ -1,5 +1,6 @@
 ﻿import {Photo} from "./Photo";
 import {Step} from "./Step";
+import {Ingredient} from "./Ingredient";
 
 export interface Recipe {
   id: number;
@@ -8,4 +9,5 @@ export interface Recipe {
   text: string;
   headerPhoto: Photo;
   steps: Step[];
+  ingredients: Ingredient[]
 }

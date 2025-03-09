@@ -19,17 +19,49 @@
     <span *ngIf="selectedFile">{{ selectedFile?.name }}</span>
   </div>
 
+  @for (item of this.ingredientsForms; track item; let i = $index) {
+    <div class="row">
+      <mat-form-field>
+        <mat-label>Ingredient</mat-label>
+        <input [formControl]="item" matInput>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Count</mat-label>
+        <input type="number" min="0" [formControl]="this.countForms[i]" matInput>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Select</mat-label>
+        <mat-select [formControl]="this.unitForms[i]">
+
+          @for (unit of this.units; track unit; let u = $index){
+            <mat-option value="{{unit.id}}">{{unit.name}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  }
+  <div class="button-row">
+    <button type="button" (click)="addIngredients()" mat-button color="primary">Add ingredient</button>
+
+    @if (this.ingredientsForms.length != 1) {
+      <button type="button" (click)="removeIngredients()" mat-button color="warn">Remove ingredient</button>
+    }
+  </div>
+  <br>
+
+
   @for (item of this.stepForms; track item; let i = $index) {
     <mat-form-field>
       <mat-label>Step: {{ i + 1 }}</mat-label>
       <textarea [formControl]="item" matInput rows="5"></textarea>
     </mat-form-field>
-
   }
   <div class="button-row">
     <button type="button" (click)="addStep()" mat-button color="primary">Add step</button>
 
-    @if (this.stepForms.length != 0) {
+    @if (this.stepForms.length != 1) {
       <button type="button" (click)="removeStep()" mat-button color="warn">Remove step</button>
     }
   </div>

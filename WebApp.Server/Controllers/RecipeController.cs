@@ -26,18 +26,18 @@ namespace WebApp.Server.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var recepie = await _context.Recipe
+            var recipe = await _context.Recipe
                 .Include(x => x.Comments)
                 .Include(x => x.HeaderPhoto)
                 .Include(x => x.Steps)
+                .Include(x => x.Ingredients)
+                    .ThenInclude(x => x.Unit)
                 .FirstOrDefaultAsync(x => x.Id == id);
             
-            foreach (var recepieStep in recepie.Steps)
-            {
-                recepieStep.Recipe = null;
-            }
-
-            return Ok(recepie);
+            recipe?.Steps?.ForEach(step => step.Recipe = null);
+            recipe?.Ingredients?.ForEach(ing => ing.Recipe = null);
+            
+            return Ok(recipe);
         }
 
         [HttpGet]
@@ -52,10 +52,23 @@ namespace WebApp.Server.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Post([FromForm] string title, [FromForm] string text, [FromForm] IFormFile picture, [FromForm] List<string> steps)
+        public async Task<IActionResult> Post([FromForm] string title, [FromForm] string text, [FromForm] IFormFile picture,
+            [FromForm] List<string> steps, [FromForm] List<string> ingredients, [FromForm] List<int> unitIds, [FromForm] List<int> counts)
         {
             var image = await _imageService.CreateImageAsync(picture);
 
+            if(ingredients is null or [] || unitIds is null or [] || counts is null or [])
+                return BadRequest(new
+                {
+                    Message = "Ingredients cannot be empty. Add at least one step!"
+                });
+            
+            if(ingredients.Count != unitIds.Count && ingredients.Count != counts.Count)
+                return BadRequest(new
+                {
+                    Message = "Error"
+                });
+            
             if (steps is null or [])
                 return BadRequest(new
                 {
@@ -94,9 +107,24 @@ namespace WebApp.Server.Controllers
                 Steps = steps.Select(x => new Step
                 {
                     Text = x,
-                }).ToList()
+                }).ToList(),
+                Ingredients = []
             };
 
+            for (var i = 0; i < ingredients.Count; i++)
+            {
+                var ingredient = ingredients[i];
+                var unitId = unitIds[i];
+                var count = counts[i];
+                
+                recipe.Ingredients.Add(new Ingredient()
+                {
+                    Name = ingredient,
+                    Count = count,
+                    UnitId = unitId
+                });
+            }
+            
             await _context.Recipe.AddAsync(recipe);
             await _context.SaveChangesAsync();
             return Ok(new
