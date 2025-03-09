@@ -77,7 +77,7 @@
       <mat-card>
         <mat-card-header>
           <mat-card-title>
-            <span>Comment</span>
+            <span>Comments</span>
           </mat-card-title>
         </mat-card-header>
         <br>
@@ -97,12 +97,14 @@
             </mat-card>
             <br>
           }
+          <app-comment [recipeId]="this.recipe!.id">
+
+          </app-comment>
+
         </mat-card-content>
       </mat-card>
 
-      <app-comment [recipeId]="this.recipe!.id">
 
-      </app-comment>
 
     </mat-card-content>
     <mat-card-actions align="end">
