@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Core.Models.Base;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace WebApp.Core.Models.Sys
 {
@@ -18,12 +19,15 @@ namespace WebApp.Core.Models.Sys
         public string Name { get; set; }
 
         [Required]
+        [JsonIgnore]
         public string Email { get; set; }
 
         [Required]
+        [JsonIgnore]
         public string PasswordHash { get; set; }
 
         [Required]
+        [JsonIgnore]
         public byte[] Salt { get; set; }
 
         public List<UserSysRole> UserSysRoles { get; set; }

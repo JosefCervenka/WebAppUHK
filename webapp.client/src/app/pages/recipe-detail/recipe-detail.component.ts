@@ -12,7 +12,6 @@ import {User} from "../../models/User";
 export class RecipeDetailComponent {
   protected id?: number;
   protected recipe?: Recipe;
-  protected author?: User;
   protected imageUrl?: string;
 
   constructor(private route: ActivatedRoute, protected http: HttpClient) {
@@ -30,10 +29,6 @@ export class RecipeDetailComponent {
         this.http.get(this.recipe.headerPhoto.url, {responseType: 'blob'}).subscribe(imageFile => {
           console.log(imageFile);
           this.imageUrl = URL.createObjectURL(imageFile);
-        });
-
-        this.http.get<User>(`api/user/${this.recipe.authorId}`).subscribe((user: User) => {
-          this.author = user;
         });
       },
       error => {

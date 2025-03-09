@@ -3,7 +3,7 @@
 
     <mat-card-header>
       <mat-card-title>{{ this.recipe?.title }}</mat-card-title>
-      <mat-card-subtitle>{{ this.author?.name }}</mat-card-subtitle>
+      <mat-card-subtitle>{{ this.recipe?.author?.name }}</mat-card-subtitle>
     </mat-card-header>
     <br>
 
@@ -69,8 +69,40 @@
             </mat-card>
             <br>
           }
+
         </mat-card-content>
       </mat-card>
+      <br>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            <span>Comment</span>
+          </mat-card-title>
+        </mat-card-header>
+        <br>
+        <mat-card-content>
+          @for (item of this.recipe?.comments; track item; let i = $index) {
+            <mat-card appearance="outlined">
+              <mat-card-header>
+                <mat-card-subtitle>{{item.author.name}}</mat-card-subtitle>
+
+              </mat-card-header>
+
+              <mat-card-content>
+                <div>
+                  <p>{{ item.text }}</p>
+                </div>
+              </mat-card-content>
+            </mat-card>
+            <br>
+          }
+        </mat-card-content>
+      </mat-card>
+
+      <app-comment [recipeId]="this.recipe!.id">
+
+      </app-comment>
 
     </mat-card-content>
     <mat-card-actions align="end">

@@ -27,15 +27,18 @@ namespace WebApp.Server.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var recipe = await _context.Recipe
+                .Include(x => x.Author)
                 .Include(x => x.Comments)
+                .ThenInclude(x => x.Author)
                 .Include(x => x.HeaderPhoto)
                 .Include(x => x.Steps)
                 .Include(x => x.Ingredients)
                     .ThenInclude(x => x.Unit)
                 .FirstOrDefaultAsync(x => x.Id == id);
             
-            recipe?.Steps?.ForEach(step => step.Recipe = null);
-            recipe?.Ingredients?.ForEach(ing => ing.Recipe = null);
+            recipe?.Steps?.ForEach(x => x.Recipe = null);
+            recipe?.Ingredients?.ForEach(x => x.Recipe = null);
+            recipe?.Comments?.ForEach(x => x.Recipe = null);
             
             return Ok(recipe);
         }
@@ -45,6 +48,7 @@ namespace WebApp.Server.Controllers
         {
             var recepie = await _context.Recipe
                 .Include(x => x.HeaderPhoto)
+                .Include(x => x.Author)
                 .ToListAsync();
 
             return Ok(recepie);
