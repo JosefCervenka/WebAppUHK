@@ -97,7 +97,7 @@
             </mat-card>
             <br>
           }
-          <app-comment [recipeId]="this.recipe!.id">
+          <app-comment [recipeId]="this.recipe!.id" (commentPosted)="ngOnInit()">
 
           </app-comment>
 

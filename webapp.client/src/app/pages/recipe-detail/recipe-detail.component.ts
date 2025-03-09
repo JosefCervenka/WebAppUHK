@@ -17,7 +17,7 @@ export class RecipeDetailComponent {
   constructor(private route: ActivatedRoute, protected http: HttpClient) {
   }
 
-  ngOnInit(): void {
+  protected ngOnInit(): void {
     this.route.paramMap.subscribe((params: ParamMap) => {
       if (params.get('id')) {
         this.id = Number.parseInt(params.get("id") ?? "0");

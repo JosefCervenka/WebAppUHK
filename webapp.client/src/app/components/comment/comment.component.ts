@@ -1,7 +1,6 @@
-import {Component, ContentChild, Input, TemplateRef} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {FormControl} from "@angular/forms";
-import {concatWith} from "rxjs";
 
 @Component({
   selector: 'app-comment',
@@ -13,6 +12,8 @@ export class CommentComponent {
   protected textForm: FormControl = new FormControl("");
 
   @Input() recipeId: number | null = null;
+
+  @Output() commentPosted = new EventEmitter<void>();
 
   constructor(protected http: HttpClient) {
   }
@@ -29,7 +30,8 @@ export class CommentComponent {
 
     this.http.post(`/api/recipe/${this.recipeId}/comment`, formData).subscribe(
       status => {
-          console.log(status);
+        this.textForm.reset();
+        this.commentPosted.emit();
       },
       error => {
           console.log(error);
