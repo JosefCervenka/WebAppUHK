@@ -1,0 +1,21 @@
+<div>
+  <mat-icon [color]="(this.temporaryRating ?? this.rating ?? -1) == 0 ? 'primary' : ''" (mouseover)="setTemporaryRating(0)"
+            (mouseleave)="resetTemporaryRating()" (click)="setRating()" aria-hidden="false" aria-label="terrible"
+            fontIcon="sentiment_very_dissatisfied"></mat-icon>
+  &nbsp;
+  <mat-icon [color]="(this.temporaryRating ?? this.rating ?? -1) > 0 ? 'primary' : ''" (mouseover)="setTemporaryRating(1)"
+            (mouseleave)="resetTemporaryRating()" (click)="setRating()" aria-hidden="false" aria-label="terrible"
+            fontIcon="star"></mat-icon>
+  <mat-icon [color]="(this.temporaryRating ?? this.rating ?? -1) > 1 ? 'primary' : ''" (mouseover)="setTemporaryRating(2)"
+            (mouseleave)="resetTemporaryRating()" (click)="setRating()" aria-hidden="false" aria-label="under average"
+            fontIcon="star"></mat-icon>
+  <mat-icon [color]="(this.temporaryRating ?? this.rating ?? -1) > 2 ? 'primary' : ''" (mouseover)="setTemporaryRating(3)"
+            (mouseleave)="resetTemporaryRating()" (click)="setRating()" aria-hidden="false" aria-label="average"
+            fontIcon="star"></mat-icon>
+  <mat-icon [color]="(this.temporaryRating ?? this.rating ?? -1) > 3 ? 'primary' : ''" (mouseover)="setTemporaryRating(4)"
+            (mouseleave)="resetTemporaryRating()" (click)="setRating()" aria-hidden="false" aria-label="good"
+            fontIcon="star"></mat-icon>
+  <mat-icon [color]="(this.temporaryRating ?? this.rating ?? -1) > 4 ? 'primary' : ''" (mouseover)="setTemporaryRating(5)"
+            (mouseleave)="resetTemporaryRating()" (click)="setRating()" aria-hidden="false" aria-label="excellent"
+            fontIcon="star"></mat-icon>
+</div>

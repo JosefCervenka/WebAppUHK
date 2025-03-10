@@ -6,10 +6,10 @@
     </mat-form-field>
 
     <div class="button-row">
+      <app-rating (ratingChange)="this.onRatingChanged($event)"></app-rating>
       <button type="submit" mat-flat-button color="primary">Share comment</button>
     </div>
+
   </form>
-
-
 
 </mat-card>

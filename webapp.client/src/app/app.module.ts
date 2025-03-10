@@ -52,6 +52,7 @@ import {CommonModule, NgOptimizedImage} from "@angular/common";
 import { RecipeAddComponent } from './pages/recipe-add/recipe-add.component';
 import { RecipeDetailComponent } from './pages/recipe-detail/recipe-detail.component';
 import { CommentComponent } from './components/comment/comment.component';
+import { RatingComponent } from './components/rating/rating.component';
 
 
 @NgModule({
@@ -68,6 +69,7 @@ import { CommentComponent } from './components/comment/comment.component';
     RecipeAddComponent,
     RecipeDetailComponent,
     CommentComponent,
+    RatingComponent,
   ],
   imports: [
     BrowserModule,
