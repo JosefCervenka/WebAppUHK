@@ -19,5 +19,7 @@ namespace WebApp.Core.Models.Recipe
         public int RecipeId { get; set; }
         
         public Recipe Recipe { get; set; }
+
+        public int Rating { get; set; }
     }
 }

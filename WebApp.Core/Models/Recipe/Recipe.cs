@@ -29,5 +29,11 @@ namespace WebApp.Core.Models.Recipe
         public List<Step> Steps { get; set; }
 
         public List<Ingredient> Ingredients { get; set; }
+
+        [NotMapped]
+        public double? Average
+        {
+            get => Comments?.Sum(x => x.Rating) / (double)(Comments?.Count ?? 1);
+        }
     }
 }

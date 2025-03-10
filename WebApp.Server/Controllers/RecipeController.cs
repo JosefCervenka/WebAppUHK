@@ -33,46 +33,51 @@ namespace WebApp.Server.Controllers
                 .Include(x => x.HeaderPhoto)
                 .Include(x => x.Steps)
                 .Include(x => x.Ingredients)
-                    .ThenInclude(x => x.Unit)
+                .ThenInclude(x => x.Unit)
                 .FirstOrDefaultAsync(x => x.Id == id);
-            
+
             recipe?.Steps?.ForEach(x => x.Recipe = null);
             recipe?.Ingredients?.ForEach(x => x.Recipe = null);
             recipe?.Comments?.ForEach(x => x.Recipe = null);
-            
+
             return Ok(recipe);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var recepie = await _context.Recipe
+            var recipes = await _context.Recipe
                 .Include(x => x.HeaderPhoto)
                 .Include(x => x.Author)
+                .Include(x => x.Comments)
                 .ToListAsync();
+            
+            recipes.ForEach(x => x.Comments.ForEach(y => y.Recipe = null));
 
-            return Ok(recepie);
+            return Ok(recipes);
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Post([FromForm] string title, [FromForm] string text, [FromForm] IFormFile picture,
-            [FromForm] List<string> steps, [FromForm] List<string> ingredients, [FromForm] List<int> unitIds, [FromForm] List<int> counts)
+        public async Task<IActionResult> Post([FromForm] string title, [FromForm] string text,
+            [FromForm] IFormFile picture,
+            [FromForm] List<string> steps, [FromForm] List<string> ingredients, [FromForm] List<int> unitIds,
+            [FromForm] List<int> counts)
         {
             var image = await _imageService.CreateImageAsync(picture);
 
-            if(ingredients is null or [] || unitIds is null or [] || counts is null or [])
+            if (ingredients is null or [] || unitIds is null or [] || counts is null or [])
                 return BadRequest(new
                 {
                     Message = "Ingredients cannot be empty. Add at least one step!"
                 });
-            
-            if(ingredients.Count != unitIds.Count && ingredients.Count != counts.Count)
+
+            if (ingredients.Count != unitIds.Count && ingredients.Count != counts.Count)
                 return BadRequest(new
                 {
                     Message = "Error"
                 });
-            
+
             if (steps is null or [])
                 return BadRequest(new
                 {
@@ -120,7 +125,7 @@ namespace WebApp.Server.Controllers
                 var ingredient = ingredients[i];
                 var unitId = unitIds[i];
                 var count = counts[i];
-                
+
                 recipe.Ingredients.Add(new Ingredient()
                 {
                     Name = ingredient,
@@ -128,7 +133,7 @@ namespace WebApp.Server.Controllers
                     UnitId = unitId
                 });
             }
-            
+
             await _context.Recipe.AddAsync(recipe);
             await _context.SaveChangesAsync();
             return Ok(new

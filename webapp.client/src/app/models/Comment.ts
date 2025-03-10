@@ -3,4 +3,5 @@ export interface Comment {
   text: string,
   author: User,
   authorId: number,
+  rating: number,
 }

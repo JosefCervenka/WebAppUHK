@@ -12,23 +12,22 @@ export class CommentComponent {
   protected textForm: FormControl = new FormControl("");
 
   @Input() recipeId: number | null = null;
-
   protected rating: number | null = null;
-
   @Output() commentPosted = new EventEmitter<void>();
 
   constructor(protected http: HttpClient) {
   }
 
-  protected selectedRating: number | null = null;
 
   protected onRatingChanged(newRating: number) {
-    this.selectedRating = newRating;
+    this.rating = newRating;
     console.log("Parent received rating:", newRating);
   }
 
   onPost() {
     console.log(this.rating);
+    if(this.rating == null)
+      return;
 
     if (!this.recipeId)
       return;
@@ -38,6 +37,7 @@ export class CommentComponent {
 
     let formData: FormData = new FormData();
     formData.append("text", this.textForm.value);
+    formData.append("rating", `${this.rating}`);
 
     this.http.post(`/api/recipe/${this.recipeId}/comment`, formData).subscribe(
       status => {

@@ -12,6 +12,7 @@ export interface Recipe {
   text: string;
   headerPhoto: Photo;
   steps: Step[];
-  ingredients: Ingredient[]
-  comments: Comment[]
+  ingredients: Ingredient[];
+  comments: Comment[];
+  average: number;
 }

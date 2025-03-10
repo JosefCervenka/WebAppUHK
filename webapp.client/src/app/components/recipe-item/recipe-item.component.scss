@@ -1,3 +1,16 @@
+@use '../../../styles' as main;
+//// Import your custom styles if needed
+@use '@angular/material' as mat; // Import Angular Material's theming functions
+
+span {
+  border-radius: 5px;
+  padding: 5px;
+  color: #FFFFFF;
+  background-color: mat.get-color-from-palette(main.$hot-pink-palette, 500);
+  font-weight: bold;
+}
+
+
 .example-card {
   max-width: 400px;
 }
@@ -7,7 +20,7 @@
   margin-bottom: 40px;
 }
 
-.clickable{
+.clickable {
   cursor: pointer;
 }
 
@@ -15,3 +28,4 @@
   width: auto;
   height: auto;
 }
+

@@ -53,6 +53,7 @@ import { RecipeAddComponent } from './pages/recipe-add/recipe-add.component';
 import { RecipeDetailComponent } from './pages/recipe-detail/recipe-detail.component';
 import { CommentComponent } from './components/comment/comment.component';
 import { RatingComponent } from './components/rating/rating.component';
+import { RatingReadonlyComponent } from './components/rating-readonly/rating-readonly.component';
 
 
 @NgModule({
@@ -70,6 +71,7 @@ import { RatingComponent } from './components/rating/rating.component';
     RecipeDetailComponent,
     CommentComponent,
     RatingComponent,
+    RatingReadonlyComponent,
   ],
   imports: [
     BrowserModule,

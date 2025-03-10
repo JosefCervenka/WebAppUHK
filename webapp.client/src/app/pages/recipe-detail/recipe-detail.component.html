@@ -85,7 +85,7 @@
           @for (item of this.recipe?.comments; track item; let i = $index) {
             <mat-card appearance="outlined">
               <mat-card-header>
-                <mat-card-subtitle>{{item.author.name}}</mat-card-subtitle>
+                <mat-card-subtitle>{{ item.author.name }}</mat-card-subtitle>
 
               </mat-card-header>
 
@@ -94,6 +94,10 @@
                   <p>{{ item.text }}</p>
                 </div>
               </mat-card-content>
+
+              <mat-card-footer>
+                <app-rating-readonly [rating]="this.item.rating"></app-rating-readonly>
+              </mat-card-footer>
             </mat-card>
             <br>
           }
@@ -109,7 +113,6 @@
         </mat-card-content>
         <br>
       </mat-card>
-
 
 
     </mat-card-content>

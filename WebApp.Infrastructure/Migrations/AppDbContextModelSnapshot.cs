@@ -75,6 +75,9 @@ namespace WebApp.Infrastructure.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Rating")
+                        .HasColumnType("integer");
+
                     b.Property<int>("RecipeId")
                         .HasColumnType("integer");
 

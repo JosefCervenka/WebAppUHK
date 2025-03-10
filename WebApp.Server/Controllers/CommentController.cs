@@ -20,7 +20,7 @@ public class CommentController : ControllerBase
     
     [Authorize]
     [HttpPost("/api/recipe/{recipeId:int}/comment")]
-    public async Task<IActionResult> PostComment([FromRoute] int recipeId, [FromForm] string text)
+    public async Task<IActionResult> PostComment([FromRoute] int recipeId, [FromForm] string text, [FromForm] int rating)
     {
         var user = await _sysUserService.GetUserFromHttpContextAsync(HttpContext);
         
@@ -28,7 +28,8 @@ public class CommentController : ControllerBase
         {
             RecipeId = recipeId,
             Author = user!,
-            Text =  text
+            Text =  text,
+            Rating = rating
         });
 
         await _context.SaveChangesAsync(); 
