@@ -1,10 +1,8 @@
 import {Component} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl} from "@angular/forms";
 import {Router} from "@angular/router";
-import {Recipe} from "../../models/Recipe";
 import {IdObject} from "../../models/IdObject";
-import {IngredientComponent} from "../ingredient/ingredient.component";
 import {Unit} from "../../models/Unit";
 
 @Component({

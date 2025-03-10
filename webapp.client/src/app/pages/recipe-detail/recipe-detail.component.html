@@ -1,3 +1,5 @@
+@if(recipe){
+
 <div class="wrapper">
   <mat-card class="main-card" style="width: 900px" appearance="outlined">
 
@@ -123,4 +125,7 @@
 
   <br>
 </div>
-
+}
+@else{
+  <mat-progress-bar mode="query"></mat-progress-bar>
+}

@@ -10,8 +10,6 @@ import {RegistrationComponent} from "./pages/registration/registration.component
 import {AuthorizedViewComponent} from "./components/authorized-view/authorized-view.component";
 import {RecipeItemComponent} from './components/recipe-item/recipe-item.component';
 import {RecipeComponent} from './pages/recipe/recipe.component';
-import {IngredientComponent} from './pages/ingredient/ingredient.component'
-
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 
 
@@ -66,7 +64,6 @@ import { RatingReadonlyComponent } from './components/rating-readonly/rating-rea
     AuthorizedViewComponent,
     RecipeItemComponent,
     RecipeComponent,
-    IngredientComponent,
     RecipeAddComponent,
     RecipeDetailComponent,
     CommentComponent,
