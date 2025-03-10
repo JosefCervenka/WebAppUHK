@@ -1,0 +1,21 @@
+<mat-divider></mat-divider>
+
+<div>
+
+  @if (this.rating == 0) {
+    <mat-icon color="primary"
+              aria-hidden="false" aria-label="terrible"
+              fontIcon="sentiment_very_dissatisfied"></mat-icon>
+  } @else {
+    <!-- Generate filled stars -->
+    @for (star of filledArray(rating).fill(rating); track star) {
+      <mat-icon color="primary" fontIcon="star"></mat-icon>
+    }
+
+    <!-- Generate empty stars -->
+    @for (star of emptyArray(empty).fill(empty); track star) {
+      <mat-icon fontIcon="star"></mat-icon>
+    }
+
+  }
+</div>
