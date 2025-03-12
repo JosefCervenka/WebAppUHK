@@ -2,7 +2,7 @@ import {Component, Input, ViewChild} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Recipe} from "../../models/Recipe";
 import {User} from "../../models/User";
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-recepie-item',
@@ -20,6 +20,14 @@ export class RecipeItemComponent {
   constructor(private http: HttpClient) {
   }
 
+  delete(): void {
+    this.http.delete(`api/recipe/${this.recipe?.id}`,).subscribe(x => {
+        console.log(x);
+      },
+      (error) => {
+        console.log(error);
+      })
+  }
 
   ngOnInit(): void {
     if (this.recipe?.headerPhoto?.url) {
@@ -30,15 +38,6 @@ export class RecipeItemComponent {
         (error) => {
           console.log(error);
         })
-    }
-    if (this.recipe?.authorId) {
-      this.http.get<User>(`/api/user/${this.recipe.authorId}`)
-        .subscribe((user: User) => {
-            this.user = user;
-          },
-          (error) => {
-            console.log(error);
-          });
     }
   }
 }

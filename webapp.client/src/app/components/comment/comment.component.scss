@@ -1,6 +1,12 @@
-.button-row{
-  display: flex;
+.footer {
+  width: 100%;
+  .control {
+    padding: 1px;
+    display: flex;
+    justify-content: space-between;
 
-  justify-content: space-between;
-  margin: 10px;
+    button {
+      margin-right: 15px;
+    }
+  }
 }

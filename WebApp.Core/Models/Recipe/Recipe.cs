@@ -33,7 +33,7 @@ namespace WebApp.Core.Models.Recipe
         [NotMapped]
         public double? Average
         {
-            get => Comments?.Sum(x => x.Rating) / (double)(Comments?.Count ?? 1);
+            get => Comments?.Sum(x => x.Rating) ?? 0 / (double)(Comments?.Count ?? 1);
         }
     }
 }

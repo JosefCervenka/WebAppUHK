@@ -1,0 +1,15 @@
+<mat-card appearance="outlined">
+  <form (ngSubmit)="this.onPost()">
+    <mat-form-field style="width: 100%">
+      <mat-label>Comment</mat-label>
+      <textarea [formControl]="this.textForm"  matInput rows="10"></textarea>
+    </mat-form-field>
+
+    <div class="button-row">
+      <app-rating (ratingChange)="this.onRatingChanged($event)"></app-rating>
+      <button type="submit" mat-flat-button color="primary">Share comment</button>
+    </div>
+
+  </form>
+
+</mat-card>

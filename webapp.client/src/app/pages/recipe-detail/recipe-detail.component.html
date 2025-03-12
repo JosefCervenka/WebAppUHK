@@ -9,6 +9,26 @@
     </mat-card-header>
     <br>
 
+    <div class="action-bar">
+      <app-authorized-view [userId]="recipe?.authorId!">
+        <ng-template #authorizedView>
+          <button mat-button color="warn" (click)="delete()">
+            Delete
+          </button>
+        </ng-template>
+
+        <ng-template #unauthorizedView>
+          <app-authorized-view role="Admin">
+            <ng-template #authorizedView>
+              <button mat-button color="warn" (click)="delete()">
+                Delete
+              </button>
+            </ng-template>
+          </app-authorized-view>
+        </ng-template>
+      </app-authorized-view>
+    </div>
+
     @if (imageUrl != null) {
       <img [src]="imageUrl" alt="{{recipe?.title}}"/>
     }
@@ -85,30 +105,17 @@
         <br>
         <mat-card-content>
           @for (item of this.recipe?.comments; track item; let i = $index) {
-            <mat-card appearance="outlined">
-              <mat-card-header>
-                <mat-card-subtitle>{{ item.author.name }}</mat-card-subtitle>
+              <app-comment (commentDelete)="ngOnInit()" [comment]="item">
 
-              </mat-card-header>
-
-              <mat-card-content>
-                <div>
-                  <p>{{ item.text }}</p>
-                </div>
-              </mat-card-content>
-
-              <mat-card-footer>
-                <app-rating-readonly [rating]="this.item.rating"></app-rating-readonly>
-              </mat-card-footer>
-            </mat-card>
+              </app-comment>
             <br>
           }
 
           <app-authorized-view>
             <ng-template #authorizedView>
-              <app-comment [recipeId]="this.recipe!.id" (commentPosted)="ngOnInit()">
+              <app-comment-create [recipeId]="this.recipe!.id" (commentPosted)="ngOnInit()">
 
-              </app-comment>
+              </app-comment-create>
             </ng-template>
           </app-authorized-view>
 

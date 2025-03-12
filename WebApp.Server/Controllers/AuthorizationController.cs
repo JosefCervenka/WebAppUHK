@@ -32,7 +32,10 @@ namespace WebApp.Server.Controllers
 
             return Ok(new
             {
-                Name = user.Name,
+                Id = user!.Id,
+                Name = user!.Name,
+                Email = user!.Email,
+                UserRoles = user.UserSysRoles.Select(x => x.SysRole.Name).ToList()
             });
         }
 
@@ -45,6 +48,7 @@ namespace WebApp.Server.Controllers
                 var user = await _sysUserService.GetUserFromHttpContextAsync(HttpContext);
                 return Ok(new
                 {
+                    Id = user!.Id,
                     Name = user!.Name,
                     Email = user!.Email,
                     UserRoles = user.UserSysRoles.Select(x => x.SysRole.Name).ToList()

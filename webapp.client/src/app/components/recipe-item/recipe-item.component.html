@@ -13,9 +13,32 @@
   </mat-card-content>
   <mat-card-actions style="display: flex; justify-content: space-between">
     <div>
-      <button mat-button routerLink="{{this.recipe?.id}}">DETAILS</button>
-      <button mat-button>LIKE</button>
+      <button mat-button routerLink="{{this.recipe?.id}}">Details</button>
+      <button mat-button>Like</button>
+
+      <app-authorized-view [userId]="recipe?.authorId!">
+        <ng-template #authorizedView>
+          <button mat-button color="warn" (click)="delete()">
+            Delete
+          </button>
+        </ng-template>
+
+        <ng-template #unauthorizedView>
+          <app-authorized-view role="Admin">
+            <ng-template #authorizedView>
+              <button mat-button color="warn" (click)="delete()">
+                Delete
+              </button>
+            </ng-template>
+          </app-authorized-view>
+        </ng-template>
+      </app-authorized-view>
+
     </div>
-    <span class="chip">{{(this.recipe?.average ?? 0) * 20}}% rating</span>
+    <span class="chip">{{ (this.recipe?.average ?? 0) * 20 }}% rating</span>
   </mat-card-actions>
+  <mat-card-footer>
+
+
+  </mat-card-footer>
 </mat-card>
