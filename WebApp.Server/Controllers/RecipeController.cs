@@ -23,8 +23,29 @@ namespace WebApp.Server.Controllers
             _imageService = imageService;
         }
 
+        [Authorize]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var recipe = await _context.Recipe.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (recipe is null)
+                return NotFound();
+
+            var user = await _sysUserService.GetUserFromHttpContextAsync(HttpContext);
+
+            if (recipe.AuthorId == user!.Id || user.UserSysRoles.Any(x => x.SysRole.Name == "Admin"))
+            {
+                await _context.Recipe.Where(x => x.Id == id).ExecuteDeleteAsync();
+
+                return Ok();
+            }
+            
+            return Unauthorized();
+        }
+
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get([FromRoute] int id)
         {
             var recipe = await _context.Recipe
                 .Include(x => x.Author)
@@ -51,7 +72,7 @@ namespace WebApp.Server.Controllers
                 .Include(x => x.Author)
                 .Include(x => x.Comments)
                 .ToListAsync();
-            
+
             recipes.ForEach(x => x.Comments.ForEach(y => y.Recipe = null));
 
             return Ok(recipes);

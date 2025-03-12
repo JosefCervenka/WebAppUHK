@@ -1,15 +1,43 @@
-<mat-card appearance="outlined">
-  <form (ngSubmit)="this.onPost()">
-    <mat-form-field style="width: 100%">
-      <mat-label>Comment</mat-label>
-      <textarea [formControl]="this.textForm"  matInput rows="10"></textarea>
-    </mat-form-field>
+<app-authorized-view [userId]="this.comment!.authorId">
 
-    <div class="button-row">
-      <app-rating (ratingChange)="this.onRatingChanged($event)"></app-rating>
-      <button type="submit" mat-flat-button color="primary">Share comment</button>
-    </div>
+  <ng-template #authorizedView>
+    <!-- user can edit and delete -->
+    <h1>HELLO</h1>
+  </ng-template>
 
-  </form>
+  <!-- user is not owner of comment -->
+  <ng-template #unauthorizedView>
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-subtitle>{{ comment!.author.name }}</mat-card-subtitle>
+      </mat-card-header>
 
-</mat-card>
+      <mat-card-content>
+        <div>
+          <p>{{ comment!.text }}</p>
+        </div>
+      </mat-card-content>
+
+      <mat-card-footer style="border: none">
+
+        <div class="footer">
+          <div class="control">
+        <app-rating-readonly [rating]="comment!.rating"></app-rating-readonly>
+
+        <!-- user can delete -->
+
+        <app-authorized-view role="Admin">
+          <ng-template #authorizedView>
+            <button mat-flat-button color="warn" (click)="delete()">
+              Delete
+            </button>
+          </ng-template>
+        </app-authorized-view>
+          </div>
+        </div>
+
+      </mat-card-footer>
+    </mat-card>
+
+  </ng-template>
+</app-authorized-view>

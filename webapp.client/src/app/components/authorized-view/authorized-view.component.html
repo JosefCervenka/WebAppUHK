@@ -1,6 +1,5 @@
-@if (this.userService.getUser() != null && (this.role == null || this.userService.containRole(role!))) {
+@if (this.userService.getUser() != null && ((this.role == null || this.userService.containRole(role!))) && (this.userId == null || this.userService.getUser()!.id == this.userId)) {
   <ng-container *ngTemplateOutlet="authorizedView"></ng-container>
-} @else
-{
+} @else {
   <ng-container *ngTemplateOutlet="unauthorizedView"></ng-container>
 }

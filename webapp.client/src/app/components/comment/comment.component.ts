@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Comment} from "../../models/Comment";
 import {HttpClient} from "@angular/common/http";
-import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-comment',
@@ -8,45 +8,22 @@ import {FormControl} from "@angular/forms";
   styleUrl: './comment.component.scss'
 })
 export class CommentComponent {
+  @Input() comment: Comment | null = null;
 
-  protected textForm: FormControl = new FormControl("");
+  @Output() commentDelete = new EventEmitter<void>();
 
-  @Input() recipeId: number | null = null;
-  protected rating: number | null = null;
-  @Output() commentPosted = new EventEmitter<void>();
-
-  constructor(protected http: HttpClient) {
+  constructor(private http: HttpClient) {
   }
-
-
-  protected onRatingChanged(newRating: number) {
-    this.rating = newRating;
-    console.log("Parent received rating:", newRating);
-  }
-
-  onPost() {
-    console.log(this.rating);
-    if(this.rating == null)
-      return;
-
-    if (!this.recipeId)
-      return;
-
-    if (!this.textForm.value)
-      return;
-
-    let formData: FormData = new FormData();
-    formData.append("text", this.textForm.value);
-    formData.append("rating", `${this.rating}`);
-
-    this.http.post(`/api/recipe/${this.recipeId}/comment`, formData).subscribe(
+  delete(){
+    this.http.delete(`/api/comment/${this.comment?.id}`).subscribe(
       status => {
-        this.textForm.reset();
-        this.commentPosted.emit();
+        console.log(status)
+        this.commentDelete.emit();
       },
       error => {
-        console.log(error);
+        console.log(error)
       }
     );
   }
 }
+

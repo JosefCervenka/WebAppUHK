@@ -3,6 +3,7 @@ import {ActivatedRoute, ParamMap} from '@angular/router';
 import {HttpClient} from "@angular/common/http";
 import {Recipe} from "../../models/Recipe";
 import {User} from "../../models/User";
+import {Router} from "@angular/router"
 
 @Component({
   selector: 'app-recipe-detail',
@@ -14,7 +15,16 @@ export class RecipeDetailComponent {
   protected recipe?: Recipe;
   protected imageUrl?: string;
 
-  constructor(private route: ActivatedRoute, protected http: HttpClient) {
+  constructor(private route: ActivatedRoute, protected http: HttpClient, private router: Router) {
+  }
+
+  delete(): void {
+    this.http.delete(`api/recipe/${this.recipe?.id}`,).subscribe(x => {
+        this.router.navigate(['/recipe'])
+      },
+      (error) => {
+        console.log(error);
+      })
   }
 
   protected ngOnInit(): void {

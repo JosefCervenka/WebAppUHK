@@ -49,9 +49,10 @@ import {MatBadgeModule} from "@angular/material/badge";
 import {CommonModule, NgOptimizedImage} from "@angular/common";
 import { RecipeAddComponent } from './pages/recipe-add/recipe-add.component';
 import { RecipeDetailComponent } from './pages/recipe-detail/recipe-detail.component';
-import { CommentComponent } from './components/comment/comment.component';
 import { RatingComponent } from './components/rating/rating.component';
 import { RatingReadonlyComponent } from './components/rating-readonly/rating-readonly.component';
+import {CommentCreateComponent} from "./components/comment-create/comment-create.component";
+import { CommentComponent } from './components/comment/comment.component';
 
 
 @NgModule({
@@ -66,9 +67,10 @@ import { RatingReadonlyComponent } from './components/rating-readonly/rating-rea
     RecipeComponent,
     RecipeAddComponent,
     RecipeDetailComponent,
-    CommentComponent,
+    CommentCreateComponent,
     RatingComponent,
     RatingReadonlyComponent,
+    CommentComponent,
   ],
   imports: [
     BrowserModule,
