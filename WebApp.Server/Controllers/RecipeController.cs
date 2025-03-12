@@ -65,7 +65,8 @@ namespace WebApp.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] string? search = null)
+        public async Task<IActionResult> GetAll([FromQuery] string? search = null,
+            [FromQuery(Name = "ingredient")] List<string>? ingredients = null)
         {
             List<Recipe> recipes = null;
 
@@ -80,6 +81,27 @@ namespace WebApp.Server.Controllers
                     .Include(x => x.Comments)
                     .ToListAsync();
             }
+            else if (ingredients is not null or [])
+            {
+                recipes =  await _context.Recipe
+                    .FromSqlRaw($"""
+                                 SELECT r.*
+                                 FROM "Recipe" r
+                                 WHERE EXISTS (
+                                     SELECT 1
+                                     FROM (VALUES {string.Join(",", ingredients.Select(x => $"('{x}')"))}) AS ing("Name")
+                                     WHERE EXISTS (
+                                         SELECT 1
+                                         FROM "Ingredient" i
+                                         WHERE i."RecipeId" = r."Id" AND i."Name" % ing."Name"
+                                     )
+                                 )
+                                 """)
+                     .Include(x => x.HeaderPhoto)
+                     .Include(x => x.Author)
+                     .Include(x => x.Comments)
+                    .ToListAsync();
+            }
             else
             {
                 recipes = await _context.Recipe
@@ -92,7 +114,7 @@ namespace WebApp.Server.Controllers
 
             recipes.ForEach(x => x.Comments.ForEach(y => y.Recipe = null));
 
-            return Ok(recipes);
+            return Ok(recipes ?? new List<Recipe>());
         }
 
         [HttpPost]

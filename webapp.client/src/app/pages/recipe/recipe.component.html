@@ -1,23 +1,45 @@
 <div class="wrapper">
   <div class="control">
     <div class="search-container">
-      <mat-form-field class="search-field" appearance="outline">
-        <mat-label>Search</mat-label>
+
+      <mat-form-field class="search-field" appearance="outline" *ngIf="!searchByIngredient">
+        <mat-label>Search by title recipe</mat-label>
         <mat-icon matPrefix>search</mat-icon>
         <input [value]="searchInput.value" (keydown.enter)="search(searchInput.value)" matInput #searchInput>
         <button *ngIf="searchInput.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchInput.value=''">
           <mat-icon>close</mat-icon>
         </button>
+      </mat-form-field>
 
+      <mat-form-field class="search-field" appearance="outline" *ngIf="searchByIngredient">
+        <mat-label>Search by ingredients</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <mat-chip-grid #templateChipGrid aria-label="Enter template form keywords" [(ngModel)]="templateKeywords">
+          @for (keyword of templateKeywords(); track keyword) {
+            <mat-chip-row (removed)="removeTemplateKeyword(keyword)">
+              {{ keyword }}
+              <button matChipRemove aria-label="'remove template form' + keyword">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          }
+        </mat-chip-grid>
+        <input
+          placeholder="Add ingredient..."
+          [matChipInputFor]="templateChipGrid"
+          (matChipInputTokenEnd)="addTemplateKeyword($event)"
+        />
       </mat-form-field>
     </div>
+    <mat-slide-toggle [(ngModel)]="searchByIngredient">Search by ingredients</mat-slide-toggle>
+    <br>
   </div>
 
   <div class="recipe-container">
-  @for (item of this.recipes; track item) {
-    <app-recepie-item [recipe]="item">
+    @for (item of this.recipes; track item) {
+      <app-recepie-item [recipe]="item">
 
-    </app-recepie-item>
-  }
+      </app-recepie-item>
+    }
   </div>
 </div>
