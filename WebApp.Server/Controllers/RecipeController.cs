@@ -40,7 +40,7 @@ namespace WebApp.Server.Controllers
 
                 return Ok();
             }
-            
+
             return Unauthorized();
         }
 
@@ -65,13 +65,30 @@ namespace WebApp.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] string? search = null)
         {
-            var recipes = await _context.Recipe
-                .Include(x => x.HeaderPhoto)
-                .Include(x => x.Author)
-                .Include(x => x.Comments)
-                .ToListAsync();
+            List<Recipe> recipes = null;
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                recipes = await _context.Recipe
+                    .FromSqlRaw("""
+                                SELECT * FROM "Recipe" WHERE "Title" % {0} ORDER BY similarity("Title", {0}) DESC
+                                """, search)
+                    .Include(x => x.HeaderPhoto)
+                    .Include(x => x.Author)
+                    .Include(x => x.Comments)
+                    .ToListAsync();
+            }
+            else
+            {
+                recipes = await _context.Recipe
+                    .Include(x => x.HeaderPhoto)
+                    .Include(x => x.Author)
+                    .Include(x => x.Comments)
+                    .ToListAsync();
+            }
+
 
             recipes.ForEach(x => x.Comments.ForEach(y => y.Recipe = null));
 

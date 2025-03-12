@@ -13,8 +13,17 @@ export class RecipeComponent {
 
   constructor(private httpClient: HttpClient) {
   }
+
+  search(search:string){
+    this.httpClient.get<Recipe[]>(`/api/recipe?search=${search}`).subscribe(
+      (recipes) => {
+        console.log(recipes)
+        this.recipes  = recipes;
+      },
+    );
+  }
   ngOnInit() {
-    this.httpClient.get<Recipe[]>("api/recipe").subscribe(
+    this.httpClient.get<Recipe[]>("/api/recipe").subscribe(
       (recipes) => {
         console.log(recipes)
         this.recipes  = recipes;

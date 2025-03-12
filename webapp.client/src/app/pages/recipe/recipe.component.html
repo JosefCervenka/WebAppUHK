@@ -4,7 +4,7 @@
       <mat-form-field class="search-field" appearance="outline">
         <mat-label>Search</mat-label>
         <mat-icon matPrefix>search</mat-icon>
-        <input matInput #searchInput maxlength="256">
+        <input [value]="searchInput.value" (keydown.enter)="search(searchInput.value)" matInput #searchInput>
         <button *ngIf="searchInput.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchInput.value=''">
           <mat-icon>close</mat-icon>
         </button>
@@ -18,8 +18,6 @@
     <app-recepie-item [recipe]="item">
 
     </app-recepie-item>
-  } @empty {
-    <mat-progress-bar mode="query"></mat-progress-bar>
   }
   </div>
 </div>
