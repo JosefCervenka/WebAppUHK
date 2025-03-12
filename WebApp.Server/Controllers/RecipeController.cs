@@ -83,23 +83,25 @@ namespace WebApp.Server.Controllers
             }
             else if (ingredients is not null or [])
             {
-                recipes =  await _context.Recipe
+                var format = string.Join(",", ingredients.Select(x => $"('{x}')"));
+                
+                recipes = await _context.Recipe
                     .FromSqlRaw($"""
                                  SELECT r.*
                                  FROM "Recipe" r
-                                 WHERE EXISTS (
+                                 WHERE NOT EXISTS (
                                      SELECT 1
-                                     FROM (VALUES {string.Join(",", ingredients.Select(x => $"('{x}')"))}) AS ing("Name")
-                                     WHERE EXISTS (
+                                     FROM (VALUES {format}) AS ing("Name")
+                                     WHERE NOT EXISTS (
                                          SELECT 1
                                          FROM "Ingredient" i
                                          WHERE i."RecipeId" = r."Id" AND i."Name" % ing."Name"
                                      )
                                  )
                                  """)
-                     .Include(x => x.HeaderPhoto)
-                     .Include(x => x.Author)
-                     .Include(x => x.Comments)
+                    .Include(x => x.HeaderPhoto)
+                    .Include(x => x.Author)
+                    .Include(x => x.Comments)
                     .ToListAsync();
             }
             else
