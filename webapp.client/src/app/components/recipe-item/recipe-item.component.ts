@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Recipe} from "../../models/Recipe";
 import {User} from "../../models/User";
 import {Router} from '@angular/router';
+import {FavoriteService} from "../../services/favorite.service";
 
 @Component({
   selector: 'app-recepie-item',
@@ -17,7 +18,12 @@ export class RecipeItemComponent {
 
   imageUrl?: string;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private favoriteService: FavoriteService) {
+  }
+
+  like(id: number): void {
+    console.log('like', id);
+    this.favoriteService.addFavorites(id);
   }
 
   delete(): void {

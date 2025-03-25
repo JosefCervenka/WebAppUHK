@@ -9,6 +9,7 @@ import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {toSignal} from "@angular/core/rxjs-interop";
+import {FavoriteService} from "../../services/favorite.service";
 
 @Component({
   selector: 'app-recepie',
@@ -21,6 +22,8 @@ export class RecipeComponent {
   protected recipes?: Recipe[];
 
   readonly templateKeywords: WritableSignal<string[]> = signal([]);
+
+  protected favoriteOnly:boolean = false;
 
   announcer = inject(LiveAnnouncer);
 
@@ -51,22 +54,25 @@ export class RecipeComponent {
     this.searchByIngredients();
   }
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private favoriteService: FavoriteService) {
   }
 
   searchByIngredients() {
     var ingredients: string[] = this.templateKeywords();
 
     var query: string = ingredients.map(ingredient => `ingredient=${ingredient}`).join('&');
+    var favorite = this.favoriteService.getFavorites().map(favorite => `favorite=${favorite}`).join('&');
 
-    this.httpClient.get<Recipe[]>(`/api/recipe?${query}`).subscribe(
+    this.httpClient.get<Recipe[]>(`/api/recipe?${query}&${favorite}`).subscribe(
       (recipes) => {
         this.recipes = recipes;
       });
   }
 
   search(search: string) {
-    this.httpClient.get<Recipe[]>(`/api/recipe?search=${search}`).subscribe(
+    var favorite = this.favoriteService.getFavorites().map(favorite => `favorite=${favorite}`).join('&');
+
+    this.httpClient.get<Recipe[]>(`/api/recipe?search=${search}&${favorite}`).subscribe(
       (recipes) => {
         this.recipes = recipes;
       },

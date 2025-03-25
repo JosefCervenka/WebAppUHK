@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Linq.Expressions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Application.Services.Common;
@@ -66,10 +67,16 @@ namespace WebApp.Server.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] string? search = null,
-            [FromQuery(Name = "ingredient")] List<string>? ingredients = null)
+            [FromQuery(Name = "ingredient")] List<string>? ingredients = null,
+            [FromQuery(Name = "favorite")] List<int>? favoritesId = null)
         {
             List<Recipe> recipes = null;
 
+            Expression<Func<Recipe, bool>> filter = x => true;
+
+            if (favoritesId is not null)
+                filter = x => favoritesId.Contains(x.Id);
+            
             if (!string.IsNullOrEmpty(search))
             {
                 recipes = await _context.Recipe
@@ -79,12 +86,13 @@ namespace WebApp.Server.Controllers
                     .Include(x => x.HeaderPhoto)
                     .Include(x => x.Author)
                     .Include(x => x.Comments)
+                    .Where(filter)
                     .ToListAsync();
             }
             else if (ingredients is not null or [])
             {
                 var format = string.Join(",", ingredients.Select(x => $"('{x}')"));
-                
+
                 recipes = await _context.Recipe
                     .FromSqlRaw($"""
                                  SELECT r.*
@@ -102,6 +110,7 @@ namespace WebApp.Server.Controllers
                     .Include(x => x.HeaderPhoto)
                     .Include(x => x.Author)
                     .Include(x => x.Comments)
+                    .Where(filter)
                     .ToListAsync();
             }
             else

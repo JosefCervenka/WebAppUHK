@@ -14,7 +14,7 @@
   <mat-card-actions style="display: flex; justify-content: space-between">
     <div>
       <button mat-button routerLink="{{this.recipe?.id}}">Details</button>
-      <button mat-button>Like</button>
+      <button mat-button (onclick)="like(this.recipe?.id ?? -1)">Like</button>
 
       <app-authorized-view [userId]="recipe?.authorId!">
         <ng-template #authorizedView>
