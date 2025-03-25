@@ -10,6 +10,11 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {toSignal} from "@angular/core/rxjs-interop";
 import {FavoriteService} from "../../services/favorite.service";
+import {PageEvent, MatPaginatorModule} from '@angular/material/paginator';
+import {JsonPipe} from '@angular/common';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatInputModule} from '@angular/material/input';
+import {Count} from '../../models/Count';
 
 @Component({
   selector: 'app-recepie',
@@ -24,6 +29,8 @@ export class RecipeComponent {
   readonly templateKeywords: WritableSignal<string[]> = signal([]);
 
   protected favoriteOnly: boolean = false;
+
+  protected query: string = '';
 
   announcer = inject(LiveAnnouncer);
 
@@ -55,43 +62,54 @@ export class RecipeComponent {
   }
 
   constructor(private httpClient: HttpClient, private favoriteService: FavoriteService) {
+
   }
 
   searchByIngredients() {
-    let ingredients: string[] = this.templateKeywords();
-    let query: string = ingredients.map(ingredient => `ingredient=${ingredient}`).join('&');
+    let ingredientsQuery: string = this.templateKeywords().map(ingredient => `ingredient=${ingredient}`).join('&');
+    let favoriteQuery = this.favoriteService.getFavorites().map(favorite => `favorite=${favorite}`).join('&');
 
     if (this.favoriteOnly) {
-      let favorite = this.favoriteService.getFavorites().map(favorite => `favorite=${favorite}`).join('&');
-
-      this.httpClient.get<Recipe[]>(`/api/recipe?${query}&${favorite}`).subscribe(
-        (recipes) => {
-          this.recipes = recipes;
-        });
+      this.query = `${ingredientsQuery}&${favoriteQuery}`;
     } else {
-      this.httpClient.get<Recipe[]>(`/api/recipe?${query}`).subscribe(
-        (recipes) => {
-          this.recipes = recipes;
-        });
+      this.query = `${ingredientsQuery}`;
     }
+
+    this.httpClient.get<Recipe[]>(`/api/recipe?${this.query}`).subscribe(
+      (recipes) => {
+        this.recipes = recipes;
+      });
+    this.httpClient.get<Count>(`/api/recipe/count?${this.query}`).subscribe(
+      (count) => {
+        this.length = count.count;
+      },
+    );
+
+    this.pageIndex = 0
   }
 
   search(search: string) {
+    let favoriteQuery = this.favoriteService.getFavorites().map(favorite => `favorite=${favorite}`).join('&');
+    let searchQuery = `search=${search}`;
+
     if (this.favoriteOnly) {
-      let favorite = this.favoriteService.getFavorites().map(favorite => `favorite=${favorite}`).join('&');
-      this.httpClient.get<Recipe[]>(`/api/recipe?search=${search}&${favorite}`).subscribe(
-        (recipes) => {
-          this.recipes = recipes;
-        },
-      );
+      this.query = `${searchQuery}&${favoriteQuery}`;
+    } else {
+      this.query = `${searchQuery}`;
     }
-    else
-    {
-      this.httpClient.get<Recipe[]>(`/api/recipe?search=${search}`).subscribe(
-        (recipes) => {
-          this.recipes = recipes;
-        });
-    }
+
+    this.httpClient.get<Recipe[]>(`/api/recipe?${this.query}`).subscribe(
+      (recipes) => {
+        this.recipes = recipes;
+      });
+
+    this.httpClient.get<Count>(`/api/recipe/count?${this.query}`).subscribe(
+      (count) => {
+        this.length = count.count;
+      },
+    );
+
+    this.pageIndex = 0;
   }
 
   ngOnInit() {
@@ -99,6 +117,49 @@ export class RecipeComponent {
       (recipes) => {
         this.recipes = recipes;
       },
+    );
+
+    this.httpClient.get<Count>("/api/recipe/count").subscribe(
+      (count) => {
+        this.length = count.count;
+      },
+    );
+
+
+    this.pageIndex = 0
+  }
+
+  length = 0;
+  pageSize = 5;
+  pageIndex = 0;
+  hidePageSize = true;
+  showFirstLastButtons = true;
+  disabled = false;
+
+  protected pageEvent: PageEvent = new PageEvent();
+
+  handlePageEvent(e: PageEvent) {
+    this.pageEvent = e;
+    this.pageIndex = e.pageIndex;
+
+    let path = `/api/recipe?pageIndex=${this.pageIndex}`;
+    let pathCount = `/api/recipe/count`;
+
+    if (this.query) {
+      path = `${path}&${this.query}`;
+      pathCount += `${pathCount}?${this.query}`;
+    }
+
+    this.httpClient.get<Count>(pathCount).subscribe(
+      (count) => {
+        this.length = count.count;
+      },
+    );
+
+    this.httpClient.get<Recipe[]>(path).subscribe(
+      (recipes) => {
+        this.recipes = recipes;
+      }
     );
   }
 }

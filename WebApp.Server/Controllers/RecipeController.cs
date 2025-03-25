@@ -68,7 +68,8 @@ namespace WebApp.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] string? search = null,
             [FromQuery(Name = "ingredient")] List<string>? ingredients = null,
-            [FromQuery(Name = "favorite")] List<int>? favoritesId = null)
+            [FromQuery(Name = "favorite")] List<int>? favoritesId = null,
+            [FromQuery(Name = "PageIndex")] int pageIndex = 0)
         {
             List<Recipe> recipes = null;
 
@@ -76,7 +77,7 @@ namespace WebApp.Server.Controllers
 
             if (favoritesId is not null)
                 filter = x => favoritesId.Contains(x.Id);
-            
+
             if (!string.IsNullOrEmpty(search))
             {
                 recipes = await _context.Recipe
@@ -87,6 +88,8 @@ namespace WebApp.Server.Controllers
                     .Include(x => x.Author)
                     .Include(x => x.Comments)
                     .Where(filter)
+                    .Skip(pageIndex * 5)
+                    .Take(5)
                     .ToListAsync();
             }
             else if (ingredients is not null or [])
@@ -111,6 +114,8 @@ namespace WebApp.Server.Controllers
                     .Include(x => x.Author)
                     .Include(x => x.Comments)
                     .Where(filter)
+                    .Skip(pageIndex * 5)
+                    .Take(5)
                     .ToListAsync();
             }
             else
@@ -120,6 +125,8 @@ namespace WebApp.Server.Controllers
                     .Include(x => x.Author)
                     .Include(x => x.Comments)
                     .Where(filter)
+                    .Skip(pageIndex * 5)
+                    .Take(5)
                     .ToListAsync();
             }
 
@@ -128,6 +135,73 @@ namespace WebApp.Server.Controllers
 
             return Ok(recipes ?? new List<Recipe>());
         }
+
+
+        [HttpGet("count")]
+        public async Task<IActionResult> GetLenght([FromQuery] string? search = null,
+            [FromQuery(Name = "ingredient")] List<string>? ingredients = null,
+            [FromQuery(Name = "favorite")] List<int>? favoriteIds = null)
+        {
+            int? recipes = null;
+
+            Expression<Func<Recipe, bool>> filter = x => true;
+
+            if (favoriteIds is not null)
+                filter = x => favoriteIds.Contains(x.Id);
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                recipes = await _context.Recipe
+                    .FromSqlRaw("""
+                                SELECT * FROM "Recipe" WHERE "Title" % {0} ORDER BY similarity("Title", {0}) DESC
+                                """, search)
+                    .Include(x => x.HeaderPhoto)
+                    .Include(x => x.Author)
+                    .Include(x => x.Comments)
+                    .Where(filter)
+                    .CountAsync();
+            }
+            else if (ingredients is not null or [])
+            {
+                var format = string.Join(",", ingredients.Select(x => $"('{x}')"));
+
+                recipes = await _context.Recipe
+                    .FromSqlRaw($"""
+                                 SELECT r.*
+                                 FROM "Recipe" r
+                                 WHERE NOT EXISTS (
+                                     SELECT 1
+                                     FROM (VALUES {format}) AS ing("Name")
+                                     WHERE NOT EXISTS (
+                                         SELECT 1
+                                         FROM "Ingredient" i
+                                         WHERE i."RecipeId" = r."Id" AND i."Name" % ing."Name"
+                                     )
+                                 )
+                                 """)
+                    .Include(x => x.HeaderPhoto)
+                    .Include(x => x.Author)
+                    .Include(x => x.Comments)
+                    .Where(filter)
+                    .CountAsync();
+            }
+            else
+            {
+                recipes = await _context.Recipe
+                    .Include(x => x.HeaderPhoto)
+                    .Include(x => x.Author)
+                    .Include(x => x.Comments)
+                    .Where(filter)
+                    .CountAsync();
+            }
+
+
+            return Ok(new
+            {
+                count = recipes ?? 0
+            });
+        }
+
 
         [HttpPost]
         [Authorize]
