@@ -119,6 +119,7 @@ namespace WebApp.Server.Controllers
                     .Include(x => x.HeaderPhoto)
                     .Include(x => x.Author)
                     .Include(x => x.Comments)
+                    .Where(filter)
                     .ToListAsync();
             }
 

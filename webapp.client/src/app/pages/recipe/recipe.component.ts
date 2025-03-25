@@ -23,7 +23,7 @@ export class RecipeComponent {
 
   readonly templateKeywords: WritableSignal<string[]> = signal([]);
 
-  protected favoriteOnly:boolean = false;
+  protected favoriteOnly: boolean = false;
 
   announcer = inject(LiveAnnouncer);
 
@@ -58,25 +58,40 @@ export class RecipeComponent {
   }
 
   searchByIngredients() {
-    var ingredients: string[] = this.templateKeywords();
+    let ingredients: string[] = this.templateKeywords();
+    let query: string = ingredients.map(ingredient => `ingredient=${ingredient}`).join('&');
 
-    var query: string = ingredients.map(ingredient => `ingredient=${ingredient}`).join('&');
-    var favorite = this.favoriteService.getFavorites().map(favorite => `favorite=${favorite}`).join('&');
+    if (this.favoriteOnly) {
+      let favorite = this.favoriteService.getFavorites().map(favorite => `favorite=${favorite}`).join('&');
 
-    this.httpClient.get<Recipe[]>(`/api/recipe?${query}&${favorite}`).subscribe(
-      (recipes) => {
-        this.recipes = recipes;
-      });
+      this.httpClient.get<Recipe[]>(`/api/recipe?${query}&${favorite}`).subscribe(
+        (recipes) => {
+          this.recipes = recipes;
+        });
+    } else {
+      this.httpClient.get<Recipe[]>(`/api/recipe?${query}`).subscribe(
+        (recipes) => {
+          this.recipes = recipes;
+        });
+    }
   }
 
   search(search: string) {
-    var favorite = this.favoriteService.getFavorites().map(favorite => `favorite=${favorite}`).join('&');
-
-    this.httpClient.get<Recipe[]>(`/api/recipe?search=${search}&${favorite}`).subscribe(
-      (recipes) => {
-        this.recipes = recipes;
-      },
-    );
+    if (this.favoriteOnly) {
+      let favorite = this.favoriteService.getFavorites().map(favorite => `favorite=${favorite}`).join('&');
+      this.httpClient.get<Recipe[]>(`/api/recipe?search=${search}&${favorite}`).subscribe(
+        (recipes) => {
+          this.recipes = recipes;
+        },
+      );
+    }
+    else
+    {
+      this.httpClient.get<Recipe[]>(`/api/recipe?search=${search}`).subscribe(
+        (recipes) => {
+          this.recipes = recipes;
+        });
+    }
   }
 
   ngOnInit() {
