@@ -18,15 +18,23 @@ export class RecipeItemComponent {
 
   imageUrl?: string;
 
-  constructor(private http: HttpClient, private favoriteService: FavoriteService) {
+  protected isFavorite: boolean = false;
+
+  constructor(private http: HttpClient, protected favoriteService: FavoriteService) {
   }
 
-  like(id: number): void {
-    console.log('like', id);
+
+  protected like(id: number): void {
     this.favoriteService.addFavorites(id);
+    this.isFavorite = true;
   }
 
-  delete(): void {
+  protected unlike(id: number): void {
+    this.favoriteService.removeFavorites(id);
+    this.isFavorite = false;
+  }
+
+  protected delete(): void {
     this.http.delete(`api/recipe/${this.recipe?.id}`,).subscribe(x => {
         console.log(x);
       },
@@ -45,5 +53,6 @@ export class RecipeItemComponent {
           console.log(error);
         })
     }
+    this.isFavorite = this.favoriteService.isFavorite(this.recipe?.id ?? -1);
   }
 }
