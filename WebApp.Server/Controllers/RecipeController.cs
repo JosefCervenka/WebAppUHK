@@ -88,6 +88,7 @@ namespace WebApp.Server.Controllers
                     .Include(x => x.Author)
                     .Include(x => x.Comments)
                     .Where(filter)
+                    .OrderByDescending(x => x.Id)
                     .Skip(pageIndex * 5)
                     .Take(5)
                     .ToListAsync();
@@ -114,6 +115,7 @@ namespace WebApp.Server.Controllers
                     .Include(x => x.Author)
                     .Include(x => x.Comments)
                     .Where(filter)
+                    .OrderByDescending(x => x.Id)
                     .Skip(pageIndex * 5)
                     .Take(5)
                     .ToListAsync();
@@ -125,6 +127,7 @@ namespace WebApp.Server.Controllers
                     .Include(x => x.Author)
                     .Include(x => x.Comments)
                     .Where(filter)
+                    .OrderByDescending(x => x.Id)
                     .Skip(pageIndex * 5)
                     .Take(5)
                     .ToListAsync();
@@ -199,6 +202,100 @@ namespace WebApp.Server.Controllers
             return Ok(new
             {
                 count = recipes ?? 0
+            });
+        }
+
+
+        [HttpPut("{id:int}")]
+        [Authorize]
+        public async Task<IActionResult> Edit([FromRoute] int id, [FromForm] string title, [FromForm] string text,
+            [FromForm] IFormFile picture,
+            [FromForm] List<string> steps, [FromForm] List<string> ingredients, [FromForm] List<int> unitIds,
+            [FromForm] List<int> counts)
+        {
+            var image = await _imageService.CreateImageAsync(picture);
+
+            if (ingredients is null or [] || unitIds is null or [] || counts is null or [])
+                return BadRequest(new
+                {
+                    Message = "Ingredients cannot be empty. Add at least one step!"
+                });
+
+            if (ingredients.Count != unitIds.Count && ingredients.Count != counts.Count)
+                return BadRequest(new
+                {
+                    Message = "Error"
+                });
+
+            if (steps is null or [])
+                return BadRequest(new
+                {
+                    Message = "Steps cannot be empty. Add at least one step!"
+                });
+
+            if (string.IsNullOrEmpty(title))
+                return BadRequest(new
+                {
+                    Message = "Title cannot be empty!"
+                });
+
+            if (string.IsNullOrEmpty(text))
+                return BadRequest(new
+                {
+                    Message = "Text cannot be empty!"
+                });
+
+            var recipe = await _context.Recipe
+                .Include(x => x.Ingredients)
+                .Include(x => x.HeaderPhoto)
+                .Include(x => x.Steps)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (recipe == null)
+                return NotFound(new
+                {
+                    Message = "Cannot find the recipe!"
+                });
+            
+            if (image.image is not null)
+            {
+                recipe.HeaderPhoto = new Photo()
+                {
+                    Name = picture.Name,
+                    Image = image.image,
+                };
+            }
+            
+            recipe.Title = title;
+
+            recipe.Text = text;
+
+            recipe.Steps = steps.Select(x => new Step()
+            {
+                Text = x
+            }).ToList();
+            
+            recipe.Ingredients = new List<Ingredient>();
+            
+            for (var i = 0; i < ingredients.Count; i++)
+            {
+                var ingredient = ingredients[i];
+                var unitId = unitIds[i];
+                var count = counts[i];
+            
+                recipe.Ingredients.Add(new Ingredient()
+                {
+                    Name = ingredient,
+                    Count = count,
+                    UnitId = unitId
+                });
+            }
+            
+            
+            await _context.SaveChangesAsync();
+            return Ok(new
+            {
+                Id = recipe.Id,
             });
         }
 

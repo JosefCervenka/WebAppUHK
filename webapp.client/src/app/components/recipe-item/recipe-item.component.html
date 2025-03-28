@@ -40,6 +40,21 @@
         </ng-template>
       </app-authorized-view>
 
+
+      <app-authorized-view [userId]="recipe?.authorId!">
+        <ng-template #authorizedView>
+          <button mat-button routerLink="{{this.recipe?.id}}/edit">Edit</button>
+        </ng-template>
+
+        <ng-template #unauthorizedView>
+          <app-authorized-view role="Admin">
+            <ng-template #authorizedView>
+              <button mat-button routerLink="{{this.recipe?.id}}/edit">Edit</button>
+            </ng-template>
+          </app-authorized-view>
+        </ng-template>
+      </app-authorized-view>
+
     </div>
     <span class="chip">{{ (this.recipe?.average ?? 0) * 20 }}% rating</span>
   </mat-card-actions>
