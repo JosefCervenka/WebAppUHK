@@ -1,0 +1,13 @@
+@use '../../../styles' as main;
+@use '@angular/material' as mat;
+
+footer{
+  display: flex;
+  height: 50px;
+  font-size: smaller;
+  color: #FFFFFF;
+  background-color: mat.get-color-from-palette(main.$hot-pink-palette, 500);
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+}
