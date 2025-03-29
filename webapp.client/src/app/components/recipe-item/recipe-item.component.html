@@ -56,7 +56,7 @@
       </app-authorized-view>
 
     </div>
-    <span class="chip">{{ (this.recipe?.average ?? 0) * 20 }}% rating</span>
+    <span class="chip">{{ ((this.recipe?.average ?? 0) * 20).toFixed(0) }}% rating</span>
   </mat-card-actions>
   <mat-card-footer>
 
