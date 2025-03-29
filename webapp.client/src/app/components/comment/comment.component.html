@@ -1,8 +1,34 @@
 <app-authorized-view [userId]="this.comment!.authorId">
 
   <ng-template #authorizedView>
-    <!-- user can edit and delete -->
-    <h1>HELLO</h1>
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-subtitle>{{ comment!.author.name }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div>
+          <p>{{ comment!.text }}</p>
+        </div>
+      </mat-card-content>
+
+      <mat-card-footer style="border: none">
+
+        <div class="footer">
+          <div class="control">
+            <app-rating-readonly [rating]="comment!.rating"></app-rating-readonly>
+
+            <!-- user can delete -->
+
+            <button mat-flat-button color="warn" (click)="delete()">
+              Delete
+            </button>
+
+          </div>
+        </div>
+
+      </mat-card-footer>
+    </mat-card>
   </ng-template>
 
   <!-- user is not owner of comment -->
@@ -22,17 +48,17 @@
 
         <div class="footer">
           <div class="control">
-        <app-rating-readonly [rating]="comment!.rating"></app-rating-readonly>
+            <app-rating-readonly [rating]="comment!.rating"></app-rating-readonly>
 
-        <!-- user can delete -->
+            <!-- user can delete -->
 
-        <app-authorized-view role="Admin">
-          <ng-template #authorizedView>
-            <button mat-flat-button color="warn" (click)="delete()">
-              Delete
-            </button>
-          </ng-template>
-        </app-authorized-view>
+            <app-authorized-view role="Admin">
+              <ng-template #authorizedView>
+                <button mat-flat-button color="warn" (click)="delete()">
+                  Delete
+                </button>
+              </ng-template>
+            </app-authorized-view>
           </div>
         </div>
 
