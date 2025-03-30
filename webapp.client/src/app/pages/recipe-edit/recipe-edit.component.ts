@@ -99,7 +99,43 @@ export class RecipeEditComponent {
     this.stepForms.pop();
   }
 
+  errorMessages: string[] = [];
+
   protected onPost() {
+    this.errorMessages = [];
+
+    if (!this.titleForm.value) {
+      this.errorMessages.push("Name cannot be empty.");
+    }
+    if (!this.textForm.value) {
+      this.errorMessages.push("Description cannot be empty.");
+    }
+    for (let ingredientsForm in this.ingredientsForms) {
+      if (!this.ingredientsForms[ingredientsForm].value) {
+        this.errorMessages.push("Ingredient cannot be empty.");
+        break;
+      }
+    }
+    for (let countForm in this.countForms) {
+      if (!this.countForms[countForm].value) {
+        this.errorMessages.push("Count cannot be empty.");
+        break;
+      }
+    }
+    for (let unitForm in this.unitForms) {
+      if (!this.unitForms[unitForm].value) {
+        this.errorMessages.push("Unit cannot be empty.");
+        break;
+      }
+    }
+    for (let stepForm in this.stepForms) {
+      if (!this.stepForms[stepForm].value) {
+        this.errorMessages.push("Step cannot be empty.");
+        break;
+      }
+    }
+
+
     let formData: FormData = new FormData();
     formData.append("picture", this.selectedFile as Blob)
     formData.append("title", this.titleForm.value)

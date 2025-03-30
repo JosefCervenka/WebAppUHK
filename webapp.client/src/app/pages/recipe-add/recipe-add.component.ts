@@ -37,14 +37,14 @@ export class RecipeAddComponent {
   constructor(protected http: HttpClient, private router: Router) {
   }
 
-  addIngredients(){
+  addIngredients() {
     this.ingredientsForms.push(new FormControl(""));
     this.unitForms.push(new FormControl(""));
     this.countForms.push(new FormControl(""))
   }
 
-  removeIngredients(){
-    if(this.ingredientsForms.length == 1)
+  removeIngredients() {
+    if (this.ingredientsForms.length == 1)
       return;
 
     this.ingredientsForms.pop();
@@ -52,18 +52,57 @@ export class RecipeAddComponent {
     this.countForms.pop();
   }
 
-  addStep()
-  {
+  addStep() {
     this.stepForms.push(new FormControl(""));
   }
 
-  removeStep(){
-    if(this.stepForms.length == 1)
+  removeStep() {
+    if (this.stepForms.length == 1)
       return;
 
     this.stepForms.pop();
   }
+
+  protected errorMessages: string[] = [];
+
   onPost() {
+    this.errorMessages = [];
+
+    if (!this.titleForm.value) {
+      this.errorMessages.push("Name cannot be empty.");
+    }
+    if (!this.textForm.value) {
+      this.errorMessages.push("Description cannot be empty.");
+    }
+    if (!this.selectedFile) {
+      this.errorMessages.push("Picture does not exist.");
+    }
+    for (let ingredientsForm in this.ingredientsForms) {
+      if (!this.ingredientsForms[ingredientsForm].value) {
+        this.errorMessages.push("Ingredient cannot be empty.");
+        break;
+      }
+    }
+    for (let countForm in this.countForms) {
+      if (!this.countForms[countForm].value) {
+        this.errorMessages.push("Count cannot be empty.");
+        break;
+      }
+    }
+    for (let unitForm in this.unitForms) {
+      if (!this.unitForms[unitForm].value) {
+        this.errorMessages.push("Unit cannot be empty.");
+        break;
+      }
+    }
+    for (let stepForm in this.stepForms) {
+      if (!this.stepForms[stepForm].value) {
+        this.errorMessages.push("Step cannot be empty.");
+        break;
+      }
+    }
+
+
     let formData: FormData = new FormData();
     formData.append("picture", this.selectedFile as Blob)
     formData.append("title", this.titleForm.value)
@@ -84,7 +123,7 @@ export class RecipeAddComponent {
 
 
     this.http.post<IdObject>("api/recipe", formData).subscribe(response => {
-      console.log(response);
+        console.log(response);
 
         this.router.navigate(['/recipe', response.id]);
       },

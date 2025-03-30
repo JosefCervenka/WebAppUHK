@@ -75,6 +75,14 @@
     }
   </div>
 
+  <ul >
+    @for (errorMessage of this.errorMessages; track errorMessage; let i = $index) {
+      <li>
+        <mat-error>{{ errorMessage }}</mat-error>
+      </li>
+    }
+  </ul>
+
 
   <div class="button-row">
     <button type="submit" mat-flat-button color="primary">Share it!</button>

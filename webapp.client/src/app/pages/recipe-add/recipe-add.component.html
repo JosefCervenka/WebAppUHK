@@ -35,8 +35,8 @@
         <mat-label>Select</mat-label>
         <mat-select [formControl]="this.unitForms[i]">
 
-          @for (unit of this.units; track unit; let u = $index){
-            <mat-option value="{{unit.id}}">{{unit.name}}</mat-option>
+          @for (unit of this.units; track unit; let u = $index) {
+            <mat-option value="{{unit.id}}">{{ unit.name }}</mat-option>
           }
         </mat-select>
       </mat-form-field>
@@ -66,11 +66,15 @@
     }
   </div>
 
+  <ul >
+    @for (errorMessage of this.errorMessages; track errorMessage; let i = $index) {
+      <li>
+        <mat-error>{{ errorMessage }}</mat-error>
+      </li>
+    }
+  </ul>
 
   <div class="button-row">
     <button type="submit" mat-flat-button color="primary">Share it!</button>
   </div>
-
 </form>
-
-
